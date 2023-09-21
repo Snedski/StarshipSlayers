@@ -13,4 +13,6 @@ class STARSHIPSLAYERS_API ADaveCharacter : public ACharacter
 
 public:
 	ADaveCharacter();
+
+	void BeginPlay() override;
 };

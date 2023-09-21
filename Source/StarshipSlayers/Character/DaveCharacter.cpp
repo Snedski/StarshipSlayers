@@ -7,3 +7,8 @@ ADaveCharacter::ADaveCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 }
+
+void ADaveCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+}
