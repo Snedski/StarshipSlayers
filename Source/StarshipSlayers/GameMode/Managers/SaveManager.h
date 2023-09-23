@@ -22,11 +22,17 @@ protected:
 public:	
 	USaveManager();
 
-	UFUNCTION(BlueprintPure, DisplayName = "Save Manager Get Save From Slot")
+	UFUNCTION(BlueprintPure, DisplayName = "SaveManager - GetSaveFromSlot")
 	static UMainSaveGame* GetSaveFromSlot(FString slotName);
 
-	UFUNCTION(BlueprintCallable, DisplayName = "Save Manager Save Slot")
+	UFUNCTION(BlueprintCallable, DisplayName = "SaveManager - SaveSlot")
 	static void SaveSlot(FString slotName);
+
+	UFUNCTION(BlueprintPure, DisplayName = "SaveManager - LoadFromSlot")
+	static UMainSaveGame* LoadFromSlot(FString slotName);
+
+	UFUNCTION(BlueprintPure, DisplayName = "SaveManager - DoesSaveExist")
+	static bool DoesSaveExist(FString slotName);
 
 protected:
 	static USaveManager* GetInstance();

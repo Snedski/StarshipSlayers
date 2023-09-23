@@ -23,6 +23,23 @@ void USaveManager::SaveSlot(FString slotName)
 	UGameplayStatics::SaveGameToSlot(GetInstance()->CurrentSaveGame, slotName, 0);
 }
 
+UMainSaveGame* USaveManager::LoadFromSlot(FString slotName)
+{
+	if(UGameplayStatics::DoesSaveGameExist(slotName, 0))
+	{
+		return Cast<UMainSaveGame>(UGameplayStatics::LoadGameFromSlot(slotName, 0));
+	}
+	else
+	{
+		return NewObject<UMainSaveGame>();
+	}
+}
+
+bool USaveManager::DoesSaveExist(FString slotName)
+{
+	return UGameplayStatics::DoesSaveGameExist(slotName, 0);
+}
+
 USaveManager* USaveManager::GetInstance()
 {
 	return AMainGameMode::MainGameModeInstance->SaveManager;
@@ -42,5 +59,7 @@ void USaveManager::CheckExistingSave(FString slotName)
 		{
 			CurrentSaveGame = NewObject<UMainSaveGame>();
 		}
+
+		CurrentSaveGame = LoadFromSlot(slotName);
 	}
 }
