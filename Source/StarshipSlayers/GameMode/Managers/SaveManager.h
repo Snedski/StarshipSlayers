@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
+#include "MainManager.h"
 #include "SaveManager.generated.h"
 
 class UMainSaveGame;
 
 UCLASS()
-class STARSHIPSLAYERS_API USaveManager : public UActorComponent
+class STARSHIPSLAYERS_API USaveManager : public UMainManager
 {
 	GENERATED_BODY()
 
@@ -20,16 +20,11 @@ protected:
 	FString CurrentSlotName = "";
 
 public:	
-	USaveManager();
-
 	UFUNCTION(BlueprintPure, DisplayName = "SaveManager - GetSaveFromSlot")
 	static UMainSaveGame* GetSaveFromSlot(FString slotName);
 
 	UFUNCTION(BlueprintCallable, DisplayName = "SaveManager - SaveSlot")
 	static void SaveSlot(FString slotName);
-
-	UFUNCTION(BlueprintPure, DisplayName = "SaveManager - LoadFromSlot")
-	static UMainSaveGame* LoadFromSlot(FString slotName);
 
 	UFUNCTION(BlueprintPure, DisplayName = "SaveManager - DoesSaveExist")
 	static bool DoesSaveExist(FString slotName);

@@ -6,11 +6,6 @@
 #include "../../Save/MainSaveGame.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
-USaveManager::USaveManager()
-{
-	PrimaryComponentTick.bCanEverTick = false;
-}
-
 UMainSaveGame* USaveManager::GetSaveFromSlot(FString slotName)
 {
 	GetInstance()->CheckExistingSave(slotName);
@@ -19,25 +14,21 @@ UMainSaveGame* USaveManager::GetSaveFromSlot(FString slotName)
 
 void USaveManager::SaveSlot(FString slotName)
 {
-	GetInstance()->CheckExistingSave(slotName);
-	UGameplayStatics::SaveGameToSlot(GetInstance()->CurrentSaveGame, slotName, 0);
-}
-
-UMainSaveGame* USaveManager::LoadFromSlot(FString slotName)
-{
-	if(UGameplayStatics::DoesSaveGameExist(slotName, 0))
+	if(GetInstance()->bEnable)
 	{
-		return Cast<UMainSaveGame>(UGameplayStatics::LoadGameFromSlot(slotName, 0));
-	}
-	else
-	{
-		return NewObject<UMainSaveGame>();
+		GetInstance()->CheckExistingSave(slotName);
+		UGameplayStatics::SaveGameToSlot(GetInstance()->CurrentSaveGame, slotName, 0);
 	}
 }
 
 bool USaveManager::DoesSaveExist(FString slotName)
 {
-	return UGameplayStatics::DoesSaveGameExist(slotName, 0);
+	if(GetInstance()->bEnable)
+	{
+		return UGameplayStatics::DoesSaveGameExist(slotName, 0);
+	}
+
+	return false;
 }
 
 USaveManager* USaveManager::GetInstance()
@@ -50,8 +41,8 @@ void USaveManager::CheckExistingSave(FString slotName)
 	if(!IsValid(CurrentSaveGame) || CurrentSlotName != slotName)
 	{
 		CurrentSlotName = slotName;
-
-		if(UGameplayStatics::DoesSaveGameExist(slotName, 0))
+		
+		if(bEnable && UGameplayStatics::DoesSaveGameExist(slotName, 0))
 		{
 			CurrentSaveGame = Cast<UMainSaveGame>(UGameplayStatics::LoadGameFromSlot(slotName, 0));
 		}
@@ -59,7 +50,5 @@ void USaveManager::CheckExistingSave(FString slotName)
 		{
 			CurrentSaveGame = NewObject<UMainSaveGame>();
 		}
-
-		CurrentSaveGame = LoadFromSlot(slotName);
 	}
 }
