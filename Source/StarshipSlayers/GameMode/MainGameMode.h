@@ -7,6 +7,7 @@
 #include "MainGameMode.generated.h"
 
 class USaveManager;
+class UMainHUD;
 
 UCLASS()
 class STARSHIPSLAYERS_API AMainGameMode : public AGameModeBase
@@ -22,6 +23,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
 	USaveManager* SaveManager = nullptr;
 
+	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
+	TSubclassOf<UMainHUD> MainHUDClass;
+
+	UPROPERTY()
+	UMainHUD* MainHUD = nullptr;
+
 public:
 	AMainGameMode();
 
@@ -29,4 +36,8 @@ protected:
 	void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
 
 	void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+public:
+	UFUNCTION(BlueprintPure, DisplayName = "MainGameMode - GetHUD")
+	static UMainHUD* GetHUD();
 };
