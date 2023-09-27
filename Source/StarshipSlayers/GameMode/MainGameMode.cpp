@@ -3,6 +3,7 @@
 
 #include "MainGameMode.h"
 #include "Managers/SaveManager.h"
+#include "../Widgets/MainHUD.h"
 
 AMainGameMode* AMainGameMode::MainGameModeInstance = nullptr;
 
@@ -18,6 +19,9 @@ void AMainGameMode::InitGame(const FString& MapName, const FString& Options, FSt
 	Super::InitGame(MapName, Options, ErrorMessage);
 
 	MainGameModeInstance = this;
+
+	MainHUD = CreateWidget<UMainHUD>(GetWorld(), MainHUDClass, "HUD");
+	MainHUD->AddToViewport();
 }
 
 void AMainGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -25,4 +29,9 @@ void AMainGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	MainGameModeInstance = nullptr;
 
 	Super::EndPlay(EndPlayReason);
+}
+
+UMainHUD* AMainGameMode::GetHUD()
+{
+	return MainGameModeInstance->MainHUD;
 }
