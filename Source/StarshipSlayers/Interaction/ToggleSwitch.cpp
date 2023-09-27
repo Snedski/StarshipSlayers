@@ -22,5 +22,5 @@ void AToggleSwitch::Interact_Implementation()
 
 void AToggleSwitch::Focus_Implementation(bool bFocus)
 {
-z	ToggleSwitchMesh->SetRenderCustomDepth(bFocus);
+	ToggleSwitchMesh->SetRenderCustomDepth(bFocus);
 }
