@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "ToggleLight.generated.h"
 
-class URectLightComponent;
+class USpotLightComponent;
 
 UCLASS()
 class STARSHIPSLAYERS_API AToggleLight : public AActor
@@ -18,24 +18,36 @@ protected:
 	USceneComponent* Root = nullptr;
 
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
-	UStaticMeshComponent* ToggleLightMesh = nullptr;
-
-	UPROPERTY(VisibleAnywhere, meta = (Hidden))
-	URectLightComponent* ToggleRectLight = nullptr;
-
-	UPROPERTY(VisibleAnywhere, meta = (Hidden))
 	UStaticMeshComponent* ConeLightEffect = nullptr;
+
+	UPROPERTY(VisibleAnywhere, meta = (Hidden))
+	USpotLightComponent* SpotLight = nullptr;
+
+	UPROPERTY(VisibleAnywhere, meta = (Hidden))
+	UStaticMeshComponent* NeonMesh = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
+	float TransitionTime = 0.5f;
 
 	UPROPERTY(EditInstanceOnly, Category = "_Settings")
 	bool bOn = true;
 
+	UPROPERTY()
+	UMaterialInstanceDynamic* NeonMeshGlowMaterial = nullptr;
+
+	float DefaultSpotLightIntensity = 0.f;
+	float DefaultNeonMeshGlowValue = 0.f;
+	float CurrentTransitionTime = 0.f;
+
 public:	
 	AToggleLight();
 
-	void OnConstruction(const FTransform& Transform) override;
+	void BeginPlay() override;
+
+	void Tick(float DeltaSeconds) override;
 
 	void Toggle();
 
 protected:
-	void Activate(bool bActivate);
+	void Activate(bool bActivate, bool bInstant = false);
 };

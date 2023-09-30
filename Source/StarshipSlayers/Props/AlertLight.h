@@ -35,9 +35,6 @@ protected:
 	UStaticMeshComponent* RightCacheMesh = nullptr;
 
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
-	UPointLightComponent* PointLight = nullptr;
-
-	UPROPERTY(VisibleAnywhere, meta = (Hidden))
 	URotatingMovementComponent* RotatingMovementComponent = nullptr;
 
 public:	

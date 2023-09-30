@@ -28,8 +28,5 @@ AAlertLight::AAlertLight()
 	RightCacheMesh = CreateDefaultSubobject<UStaticMeshComponent>("Right Cache");
 	RightCacheMesh->AttachToComponent(Root, FAttachmentTransformRules::KeepRelativeTransform);
 
-	PointLight = CreateDefaultSubobject<UPointLightComponent>("Point Light");
-	PointLight->AttachToComponent(Root, FAttachmentTransformRules::KeepRelativeTransform);
-
 	RotatingMovementComponent = CreateDefaultSubobject<URotatingMovementComponent>("Rotate Light Component");
 }
