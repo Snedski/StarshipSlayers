@@ -2,10 +2,13 @@
 
 
 #include "DaveCharacter.h"
+#include "../GameMode/Systems/Interaction/InteractionSystem.h"
 
 ADaveCharacter::ADaveCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	InteractionSystem = CreateDefaultSubobject<UInteractionSystem>("Interaction System");
 }
 
 void ADaveCharacter::BeginPlay()

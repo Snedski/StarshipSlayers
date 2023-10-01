@@ -6,10 +6,16 @@
 #include "GameFramework/Character.h"
 #include "DaveCharacter.generated.h"
 
+class UInteractionSystem;
+
 UCLASS()
 class STARSHIPSLAYERS_API ADaveCharacter : public ACharacter
 {
 	GENERATED_BODY()
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (Hidden))
+	UInteractionSystem* InteractionSystem = nullptr;
 
 public:
 	ADaveCharacter();
