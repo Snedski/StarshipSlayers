@@ -7,6 +7,7 @@
 #include "DaveCharacter.generated.h"
 
 class UInteractionSystem;
+class UFlashlightSystem;
 
 UCLASS()
 class STARSHIPSLAYERS_API ADaveCharacter : public ACharacter
@@ -16,6 +17,9 @@ class STARSHIPSLAYERS_API ADaveCharacter : public ACharacter
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (Hidden))
 	UInteractionSystem* InteractionSystem = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (Hidden))
+	UFlashlightSystem* FlashlightSystem = nullptr;
 
 public:
 	ADaveCharacter();
