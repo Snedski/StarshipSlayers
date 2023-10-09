@@ -6,7 +6,7 @@
 #include "Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h"
 #include "InteractableInterface.h"
 #include "../../MainGameMode.h"
-#include "../../../Widgets/MainHUD.h"
+#include "../../../Widgets/HUD/MainHUD.h"
 
 UInteractionSystem::UInteractionSystem()
 {

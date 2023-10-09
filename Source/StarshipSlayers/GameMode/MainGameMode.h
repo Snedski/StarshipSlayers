@@ -8,13 +8,15 @@
 
 class USaveManager;
 class UMainHUD;
+class AFadeSystem;
 
 UCLASS()
 class STARSHIPSLAYERS_API AMainGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	
-	friend class USaveManager;
+	friend USaveManager;
+	friend AFadeSystem;
 
 public:
 	static AMainGameMode* MainGameModeInstance;
@@ -34,6 +36,8 @@ public:
 
 protected:
 	void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
+
+	void BeginPlay() override;
 
 	void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
