@@ -9,9 +9,9 @@ UFlashlightSystem::UFlashlightSystem()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UFlashlightSystem::SetupSystem(USpotLightComponent* spotlight)
+void UFlashlightSystem::SetupSystem(USceneComponent* spotlightsRoot)
 {
-	Flashlight = spotlight;
+	FlashlightsRoot = spotlightsRoot;
 	ActivateFlashlight(bOn);
 }
 
@@ -23,5 +23,5 @@ void UFlashlightSystem::ToggleFlashlight()
 
 void UFlashlightSystem::ActivateFlashlight(bool bActivate)
 {
-	Flashlight->SetVisibility(bActivate);
+	FlashlightsRoot->SetVisibility(bActivate, true);
 }

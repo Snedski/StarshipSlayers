@@ -18,13 +18,13 @@ protected:
 	bool bOn = false;
 
 	UPROPERTY()
-	USpotLightComponent* Flashlight = nullptr;
+	USceneComponent* FlashlightsRoot = nullptr;
 
 public:	
 	UFlashlightSystem();
 
 	UFUNCTION(BlueprintCallable)
-	void SetupSystem(USpotLightComponent* spotlight);
+	void SetupSystem(USceneComponent* spotlightsRoot);
 
 	UFUNCTION(BlueprintCallable)
 	void ToggleFlashlight();
