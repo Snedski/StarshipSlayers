@@ -2,8 +2,8 @@
 
 
 #include "SaveManager.h"
-#include "../MainGameMode.h"
-#include "../../Save/MainSaveGame.h"
+#include "../../MainGameMode.h"
+#include "../../../Save/MainSaveGame.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 UMainSaveGame* USaveManager::GetSaveFromSlot(FString slotName)
