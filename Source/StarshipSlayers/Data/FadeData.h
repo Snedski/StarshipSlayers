@@ -5,16 +5,16 @@
 #include "CoreMinimal.h"
 #include "FadeData.generated.h"
 
-USTRUCT(BlueprintType)
+USTRUCT(BlueprintType, Blueprintable)
 struct FFadeData
 {
 	GENERATED_USTRUCT_BODY()
 
 public:
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Duration = 0.5f;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FLinearColor Color = FLinearColor::Black;
 
 public:

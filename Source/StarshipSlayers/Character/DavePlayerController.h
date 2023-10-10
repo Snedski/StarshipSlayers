@@ -11,4 +11,6 @@ class STARSHIPSLAYERS_API ADavePlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
+protected:
+	ADavePlayerController();
 };

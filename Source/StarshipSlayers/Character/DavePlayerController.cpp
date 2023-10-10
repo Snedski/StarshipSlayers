@@ -3,3 +3,8 @@
 
 #include "DavePlayerController.h"
 
+ADavePlayerController::ADavePlayerController()
+{
+	PrimaryActorTick.bTickEvenWhenPaused = true;
+	bShouldPerformFullTickWhenPaused = true;
+}

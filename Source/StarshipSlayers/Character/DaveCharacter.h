@@ -9,6 +9,7 @@
 class UInteractionSystem;
 class UFlashlightSystem;
 class UZoomSystem;
+class ULogBookSystem;
 
 UCLASS()
 class STARSHIPSLAYERS_API ADaveCharacter : public ACharacter
@@ -24,6 +25,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (Hidden))
 	UZoomSystem* ZoomSystem = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (Hidden))
+	ULogBookSystem* LogBookSystem = nullptr;
 
 public:
 	ADaveCharacter();
