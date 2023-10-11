@@ -16,4 +16,13 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	FRotator PlayerRotation = FRotator::ZeroRotator;
+
+public:
+	FPlayerSaveData() {};
+
+	FPlayerSaveData(FVector inLocation, FRotator inRotation)
+	{
+		PlayerLocation = inLocation;
+		PlayerRotation = inRotation;
+	}
 };
