@@ -24,6 +24,7 @@ protected:
 	ULogBook* LogBook = nullptr;
 
 	bool bTransitionDone = true;
+	bool bLogBookOpen = false;
 
 public:	
 	ULogBookSystem();
@@ -33,6 +34,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ToggleLogBook();
+
+	bool IsLogBookOpen();
+
+	bool InTransition();
 
 protected:
 	UFUNCTION()

@@ -15,4 +15,6 @@ protected:
 	ADavePlayerController();
 
 	void BeginPlay() override;
+
+	void Tick( float DeltaSeconds ) override;
 };

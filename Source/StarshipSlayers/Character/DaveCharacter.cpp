@@ -15,6 +15,7 @@
 #include "Runtime/Engine/Classes/Camera/CameraComponent.h"
 #include "Runtime/Engine/Classes/Components/SpotLightComponent.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "../GameMode/Systems/Pause/PauseSystem.h"
 
 ADaveCharacter::ADaveCharacter()
 {
@@ -33,6 +34,7 @@ ADaveCharacter::ADaveCharacter()
 	FlashlightSystem = CreateDefaultSubobject<UFlashlightSystem>("Flashlight System");
 	ZoomSystem = CreateDefaultSubobject<UZoomSystem>("Zoom System");
 	LogBookSystem = CreateDefaultSubobject<ULogBookSystem>("LogBook System");
+	PauseSystem = CreateDefaultSubobject<UPauseSystem>("Pause System");
 }
 
 void ADaveCharacter::BeginPlay()
@@ -58,6 +60,7 @@ void ADaveCharacter::BeginPlay()
 	FlashlightSystem->SetupSystem(SpringArm);
 	ZoomSystem->SetupSystem(Camera);
 	LogBookSystem->SetupSystem();
+	PauseSystem->SetupSystem();
 }
 
 void ADaveCharacter::Tick(float DeltaSeconds)
@@ -108,5 +111,16 @@ void ADaveCharacter::OnZoom(bool value)
 
 void ADaveCharacter::OnLogBook()
 {
-	LogBookSystem->ToggleLogBook();
+	if(!PauseSystem->IsPauseMenuOpen())
+	{
+		LogBookSystem->ToggleLogBook();
+	}
+}
+
+void ADaveCharacter::OnPause()
+{
+	if(!LogBookSystem->IsLogBookOpen() && !LogBookSystem->InTransition())
+	{
+		PauseSystem->TogglePauseMenu();
+	}
 }

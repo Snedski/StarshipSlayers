@@ -14,6 +14,7 @@ class UInputMappingContext;
 class USpringArmComponent;
 class UCameraComponent;
 class USpotLightComponent;
+class UPauseSystem;
 
 UCLASS()
 class STARSHIPSLAYERS_API ADaveCharacter : public ACharacter
@@ -44,6 +45,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (Hidden))
 	ULogBookSystem* LogBookSystem = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (Hidden))
+	UPauseSystem* PauseSystem = nullptr;
 
 public:
 	ADaveCharacter();
@@ -76,4 +80,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void OnLogBook();
+
+	UFUNCTION(BlueprintCallable)
+	void OnPause();
 };

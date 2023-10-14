@@ -6,7 +6,7 @@
 ADavePlayerController::ADavePlayerController()
 {
 	PrimaryActorTick.bTickEvenWhenPaused = true;
-	bShouldPerformFullTickWhenPaused = true;
+	bShouldPerformFullTickWhenPaused = false;
 }
 
 void ADavePlayerController::BeginPlay()
@@ -14,4 +14,14 @@ void ADavePlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	SetInputMode(FInputModeGameOnly());
+}
+
+void ADavePlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if(GetWorld()->IsPaused())
+	{
+		UpdateCameraManager(DeltaSeconds);
+	}
 }

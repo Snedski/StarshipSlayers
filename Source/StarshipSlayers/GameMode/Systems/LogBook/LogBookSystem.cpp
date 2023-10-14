@@ -12,7 +12,7 @@ ULogBookSystem::ULogBookSystem()
 
 void ULogBookSystem::SetupSystem()
 {
-	LogBook = CreateWidget<ULogBook>(GetWorld(), LogBookClass);
+	LogBook = CreateWidget<ULogBook>(GetWorld()->GetFirstPlayerController(), LogBookClass);
 	LogBook->AddToViewport(1);
 	LogBook->SetVisibility(ESlateVisibility::Hidden);
 }
@@ -22,6 +22,7 @@ void ULogBookSystem::ToggleLogBook()
 	if(bTransitionDone)
 	{
 		bTransitionDone = false;
+		bLogBookOpen = !bLogBookOpen;
 
 		AFadeSystem::GetInstance()->OnFadeIn.AddUniqueDynamic(this, &ULogBookSystem::OnToggleFadeIn);
 		AFadeSystem::GetInstance()->OnFadeOut.AddUniqueDynamic(this, &ULogBookSystem::OnToggleFadeOut);
@@ -29,23 +30,32 @@ void ULogBookSystem::ToggleLogBook()
 	}
 }
 
+bool ULogBookSystem::IsLogBookOpen()
+{
+	return bLogBookOpen;
+}
+
+bool ULogBookSystem::InTransition()
+{
+	return !bTransitionDone;
+}
+
 void ULogBookSystem::OnToggleFadeIn()
 {
 	AFadeSystem::GetInstance()->OnFadeIn.RemoveDynamic(this, &ULogBookSystem::OnToggleFadeIn);
+	APlayerController* controller = GetWorld()->GetFirstPlayerController();
 
-	bool bOpenLogBook = LogBook->GetVisibility() == ESlateVisibility::Hidden;
+	LogBook->SetVisibility(bLogBookOpen ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+	controller->SetPause(bLogBookOpen);
+	controller->bShowMouseCursor = bLogBookOpen;
 
-	LogBook->SetVisibility(bOpenLogBook ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-	GetWorld()->GetFirstPlayerController()->SetPause(bOpenLogBook);
-	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = bOpenLogBook;
-
-	if(bOpenLogBook)
+	if(bLogBookOpen)
 	{
-		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameAndUI());
+		controller->SetInputMode(FInputModeGameAndUI());
 	}
 	else
 	{
-		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameOnly());
+		controller->SetInputMode(FInputModeGameOnly());
 	}
 }
 
