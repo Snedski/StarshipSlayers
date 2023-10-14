@@ -8,3 +8,10 @@ ADavePlayerController::ADavePlayerController()
 	PrimaryActorTick.bTickEvenWhenPaused = true;
 	bShouldPerformFullTickWhenPaused = true;
 }
+
+void ADavePlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	SetInputMode(FInputModeGameOnly());
+}

@@ -13,4 +13,6 @@ class STARSHIPSLAYERS_API ADavePlayerController : public APlayerController
 	
 protected:
 	ADavePlayerController();
+
+	void BeginPlay() override;
 };
