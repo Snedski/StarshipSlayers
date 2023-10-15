@@ -68,7 +68,7 @@ void ADaveCharacter::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	UMainSaveGame* saveGame = USaveManager::GetSaveFromSlot("SaveSlot_0");
-	saveGame->PlayerSaveData = FPlayerSaveData(GetActorLocation(), GetActorRotation());
+	saveGame->PlayerSaveData = FPlayerSaveData(GetActorLocation(), GetControlRotation());
 }
 
 void ADaveCharacter::OnMove(FVector2D input)
