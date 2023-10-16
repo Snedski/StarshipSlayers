@@ -4,26 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "MainGameMode.h"
-#include "DaveGameMode.generated.h"
+#include "MenuGameMode.generated.h"
 
-class UMainHUD;
+class UMainMenu;
 
 UCLASS()
-class STARSHIPSLAYERS_API ADaveGameMode : public AMainGameMode
+class STARSHIPSLAYERS_API AMenuGameMode : public AMainGameMode
 {
 	GENERATED_BODY()
-	
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
-	TSubclassOf<UMainHUD> MainHUDClass;
+	TSubclassOf<UMainMenu> MainMenuClass = nullptr;
 
 	UPROPERTY()
-	UMainHUD* MainHUD = nullptr;
+	UMainMenu* MainMenu = nullptr;
 
 protected:
 	void BeginPlay() override;
-
-public:
-	UFUNCTION(BlueprintPure, DisplayName = "DaveGameMode - GetHUD")
-	static UMainHUD* GetHUD();
 };

@@ -10,7 +10,7 @@ void AFadeSystem::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FadeWidget = CreateWidget<UFadeWidget>(GetWorld(), FadeWidgetClass);
+	FadeWidget = CreateWidget<UFadeWidget>(GetWorld()->GetFirstPlayerController(), FadeWidgetClass);
 	FadeWidget->AddToViewport(1000000.f);
 }
 

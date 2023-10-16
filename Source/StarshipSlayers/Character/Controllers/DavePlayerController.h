@@ -3,18 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/PlayerController.h"
+#include "MainPlayerController.h"
 #include "DavePlayerController.generated.h"
 
 UCLASS()
-class STARSHIPSLAYERS_API ADavePlayerController : public APlayerController
+class STARSHIPSLAYERS_API ADavePlayerController : public AMainPlayerController
 {
 	GENERATED_BODY()
 	
 protected:
-	ADavePlayerController();
-
 	void BeginPlay() override;
-
-	void Tick( float DeltaSeconds ) override;
 };

@@ -4,11 +4,11 @@
 #include "DaveGameMode.h"
 #include "../Widgets/HUD/MainHUD.h"
 
-void ADaveGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+void ADaveGameMode::BeginPlay()
 {
-	Super::InitGame(MapName, Options, ErrorMessage);
+	Super::BeginPlay();
 
-	MainHUD = CreateWidget<UMainHUD>(GetWorld(), MainHUDClass, "HUD");
+	MainHUD = CreateWidget<UMainHUD>(GetWorld()->GetFirstPlayerController(), MainHUDClass, "HUD");
 	MainHUD->AddToViewport();
 }
 
