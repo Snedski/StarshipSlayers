@@ -10,7 +10,6 @@ class UInteractionSystem;
 class UFlashlightSystem;
 class UZoomSystem;
 class ULogBookSystem;
-class UInputMappingContext;
 class USpringArmComponent;
 class UCameraComponent;
 class USpotLightComponent;
@@ -22,9 +21,6 @@ class STARSHIPSLAYERS_API ADaveCharacter : public ACharacter
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
-	UInputMappingContext* InputMapping = nullptr;
-
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
 	UCameraComponent* Camera = nullptr;
 

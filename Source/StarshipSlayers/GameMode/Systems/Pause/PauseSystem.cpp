@@ -3,6 +3,7 @@
 
 #include "PauseSystem.h"
 #include "../../../Widgets/Pause/PauseMenu.h"
+#include "../../../Character/Controllers/MainPlayerController.h"
 
 UPauseSystem::UPauseSystem()
 {
@@ -19,13 +20,13 @@ void UPauseSystem::SetupSystem()
 
 void UPauseSystem::TogglePauseMenu()
 {
-	APlayerController* controller = GetWorld()->GetFirstPlayerController();
+	AMainPlayerController* controller = (AMainPlayerController*) GetWorld()->GetFirstPlayerController();
 
 	bPauseMenuOpen = !bPauseMenuOpen;
 
 	PauseMenu->SetVisibility(bPauseMenuOpen ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 	controller->SetPause(bPauseMenuOpen);
-	controller->bShowMouseCursor = bPauseMenuOpen;
+	controller->ChangeMouseCursorVisibility(bPauseMenuOpen);
 
 	if(bPauseMenuOpen)
 	{

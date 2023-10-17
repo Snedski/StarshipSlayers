@@ -6,11 +6,9 @@
 #include "../GameMode/Systems/Flashlight/FlashlightSystem.h"
 #include "../GameMode/Systems/Zoom/ZoomSystem.h"
 #include "../GameMode/Systems/LogBook/LogBookSystem.h"
-#include "InputMappingContext.h"
 #include "../GameMode/Managers/Save/SaveManager.h"
 #include "../Save/MainSaveData.h"
 #include "../Save/MainSaveGame.h"
-#include "EnhancedInputSubsystems.h"
 #include "Runtime/Engine/Classes/GameFramework/SpringArmComponent.h"
 #include "Runtime/Engine/Classes/Camera/CameraComponent.h"
 #include "Runtime/Engine/Classes/Components/SpotLightComponent.h"
@@ -51,10 +49,6 @@ void ADaveCharacter::BeginPlay()
 		SetActorRotation(saveData.PlayerRotation);
 		controller->SetControlRotation(GetActorRotation());
 	}
-
-	ULocalPlayer* localPlayer = Cast<ULocalPlayer>(controller->Player);
-	UEnhancedInputLocalPlayerSubsystem* inputSystem = localPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
-	inputSystem->AddMappingContext(InputMapping, 0);
 
 	InteractionSystem->SetupSystem(Camera);
 	FlashlightSystem->SetupSystem(SpringArm);
