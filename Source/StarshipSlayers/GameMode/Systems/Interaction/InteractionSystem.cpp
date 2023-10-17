@@ -5,8 +5,8 @@
 #include "Runtime/Engine/Classes/Camera/CameraComponent.h"
 #include "Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h"
 #include "InteractableInterface.h"
-#include "../../MainGameMode.h"
 #include "../../../Widgets/HUD/MainHUD.h"
+#include "../../DaveGameMode.h"
 
 UInteractionSystem::UInteractionSystem()
 {
@@ -50,7 +50,7 @@ void UInteractionSystem::TickComponent(float DeltaTime, enum ELevelTick TickType
 
 			FocusedInteractable = interactable;
 			IInteractableInterface::Execute_Focus(FocusedInteractable, true);
-			AMainGameMode::GetHUD()->ShowInteractionPopup(true);
+			ADaveGameMode::GetHUD()->ShowInteractionPopup(true);
 
 			return;
 		}
@@ -60,7 +60,7 @@ void UInteractionSystem::TickComponent(float DeltaTime, enum ELevelTick TickType
 	{
 		IInteractableInterface::Execute_Focus(FocusedInteractable, false);
 		FocusedInteractable = nullptr;
-		AMainGameMode::GetHUD()->ShowInteractionPopup(false);
+		ADaveGameMode::GetHUD()->ShowInteractionPopup(false);
 	}
 }
 

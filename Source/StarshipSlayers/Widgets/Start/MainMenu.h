@@ -4,27 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "PauseMenu.generated.h"
-
-class UPauseSystem;
+#include "MainMenu.generated.h"
 
 UCLASS()
-class STARSHIPSLAYERS_API UPauseMenu : public UUserWidget
+class STARSHIPSLAYERS_API UMainMenu : public UUserWidget
 {
-	friend UPauseSystem;
-
 	GENERATED_BODY()
 	
 protected:
-	UPROPERTY()
-	UPauseSystem* PauseSystem = nullptr;
-
-protected:
 	UFUNCTION(BlueprintCallable)
-	void OnContinue();
+	void OnPlay();
 
 	UFUNCTION(BlueprintCallable)
 	void OnQuit();
 
-	void InitPauseMenu(UPauseSystem* inPauseSystem);
+	UFUNCTION()
+	void OnPlayFadeIn();
 };

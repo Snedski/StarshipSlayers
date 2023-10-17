@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "../Data/FadeData.h"
 #include "MainGameMode.generated.h"
 
 class USaveManager;
-class UMainHUD;
 class AFadeSystem;
 
 UCLASS()
@@ -26,10 +26,12 @@ protected:
 	USaveManager* SaveManager = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
-	TSubclassOf<UMainHUD> MainHUDClass;
+	float TimeBeforeFadeOut = 0.5f;
 
-	UPROPERTY()
-	UMainHUD* MainHUD = nullptr;
+	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
+	FFadeData StartingFade = FFadeData();
+
+	float ElapsedBeforeFadeOut = 0.f;
 
 public:
 	AMainGameMode();
@@ -39,9 +41,7 @@ protected:
 
 	void BeginPlay() override;
 
-	void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	void Tick( float DeltaSeconds ) override;
 
-public:
-	UFUNCTION(BlueprintPure, DisplayName = "MainGameMode - GetHUD")
-	static UMainHUD* GetHUD();
+	void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 };
