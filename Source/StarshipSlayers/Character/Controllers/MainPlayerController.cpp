@@ -35,14 +35,6 @@ void AMainPlayerController::DetectAnyKey(FKey key)
 	DetectController(key.IsGamepadKey());
 }
 
-void AMainPlayerController::DetectMouseMovement(FVector movement)
-{
-	if(movement != FVector::ZeroVector)
-	{
-		DetectController(false);
-	}
-}
-
 void AMainPlayerController::DetectController(bool bUseController)
 {
 	bIsUsingController = bUseController;

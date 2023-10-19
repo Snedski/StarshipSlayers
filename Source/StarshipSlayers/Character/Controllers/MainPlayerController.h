@@ -30,9 +30,6 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void DetectAnyKey(FKey key);
 
-	UFUNCTION(BlueprintCallable)
-	void DetectMouseMovement(FVector movement);
-
 	void DetectController(bool bUseController);
 
 public:
