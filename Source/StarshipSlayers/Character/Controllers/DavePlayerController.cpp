@@ -2,10 +2,3 @@
 
 
 #include "DavePlayerController.h"
-
-void ADavePlayerController::BeginPlay()
-{
-	Super::BeginPlay();
-
-	SetInputMode(FInputModeGameOnly());
-}

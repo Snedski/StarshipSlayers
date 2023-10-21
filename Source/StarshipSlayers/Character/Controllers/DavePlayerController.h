@@ -10,7 +10,4 @@ UCLASS()
 class STARSHIPSLAYERS_API ADavePlayerController : public AMainPlayerController
 {
 	GENERATED_BODY()
-	
-protected:
-	void BeginPlay() override;
 };

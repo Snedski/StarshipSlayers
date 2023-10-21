@@ -8,6 +8,14 @@
 
 class UInputMappingContext;
 
+UENUM(BlueprintType)
+enum class ECurrentInputMode : uint8
+{
+	CIM_GAME,
+	CIM_GAME_UI,
+	CIM_UI
+};
+
 UCLASS()
 class STARSHIPSLAYERS_API AMainPlayerController : public APlayerController
 {
@@ -19,6 +27,9 @@ protected:
 
 	bool bIsUsingController = false;
 	bool bShowMouseCursorBuffer = false;
+	bool bOverrideKeyboardInputMode = true;
+
+	ECurrentInputMode KeyboardInputMode = ECurrentInputMode::CIM_GAME;
 
 protected:
 	AMainPlayerController();
@@ -32,6 +43,17 @@ protected:
 
 	void DetectController(bool bUseController);
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void PrintUsingController(bool bUseController);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void PrintCurrentInputMode(ECurrentInputMode inputMode);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void PrintKeyboardInputMode(ECurrentInputMode inputMode);
+
 public:
+	void SetInputMode(const FInputModeDataBase& InData) override;
+
 	void ChangeMouseCursorVisibility(bool bVisible);
 };

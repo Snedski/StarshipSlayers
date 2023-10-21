@@ -7,6 +7,6 @@ void AMenuPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SetInputMode(FInputModeUIOnly());
 	ChangeMouseCursorVisibility(true);
+	SetInputMode(FInputModeGameAndUI());
 }
