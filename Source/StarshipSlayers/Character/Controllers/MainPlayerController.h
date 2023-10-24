@@ -56,6 +56,4 @@ protected:
 
 public:
 	void SetInputMode(const FInputModeDataBase& InData) override;
-
-	void ChangeMouseCursorVisibility(bool bVisible);
 };

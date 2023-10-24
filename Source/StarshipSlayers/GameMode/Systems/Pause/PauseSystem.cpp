@@ -26,7 +26,6 @@ void UPauseSystem::TogglePauseMenu()
 
 	PauseMenu->SetVisibility(bPauseMenuOpen ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 	controller->SetPause(bPauseMenuOpen);
-	controller->ChangeMouseCursorVisibility(bPauseMenuOpen);
 
 	if(bPauseMenuOpen)
 	{

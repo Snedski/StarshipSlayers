@@ -48,7 +48,6 @@ void ULogBookSystem::OnToggleFadeIn()
 
 	LogBook->SetVisibility(bLogBookOpen ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 	controller->SetPause(bLogBookOpen);
-	controller->ChangeMouseCursorVisibility(bLogBookOpen);
 
 	if(bLogBookOpen)
 	{

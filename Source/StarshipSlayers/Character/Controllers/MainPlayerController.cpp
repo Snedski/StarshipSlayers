@@ -196,16 +196,19 @@ void AMainPlayerController::SetInputMode(const FInputModeDataBase& InData)
 		if(viewport->IgnoreInput())
 		{
 			KeyboardInputMode = ECurrentInputMode::CIM_UI;
+			bShowMouseCursorBuffer = true;
 		}
 		else
 		{
 			if(viewport->GetMouseCaptureMode() == EMouseCaptureMode::CaptureDuringMouseDown)
 			{
 				KeyboardInputMode = ECurrentInputMode::CIM_GAME_UI;
+				bShowMouseCursorBuffer = true;
 			}
 			else
 			{
 				KeyboardInputMode = ECurrentInputMode::CIM_GAME;
+				bShowMouseCursorBuffer = false;
 			}
 		}
 	}
@@ -214,14 +217,8 @@ void AMainPlayerController::SetInputMode(const FInputModeDataBase& InData)
 	{
 		Super::SetInputMode(FInputModeGameOnly());
 	}
-}
-
-void AMainPlayerController::ChangeMouseCursorVisibility(bool bVisible)
-{
-	bShowMouseCursorBuffer = bVisible;
-
-	if(!bIsUsingController)
+	else
 	{
-		bShowMouseCursor = bVisible;
+		bShowMouseCursor = bShowMouseCursorBuffer;
 	}
 }
