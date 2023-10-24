@@ -8,8 +8,7 @@
 
 class UInputMappingContext;
 
-UENUM(BlueprintType)
-enum class ECurrentInputMode : uint8
+enum ECurrentInputMode : uint8
 {
 	CIM_GAME,
 	CIM_GAME_UI,
@@ -43,14 +42,15 @@ protected:
 
 	void DetectController(bool bUseController);
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void PrintUsingController(bool bUseController);
+	void PrintUsingController();
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void PrintCurrentInputMode(ECurrentInputMode inputMode);
+	void PrintCurrentInputMode();
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void PrintKeyboardInputMode(ECurrentInputMode inputMode);
+	void PrintKeyboardInputMode();
+
+	void PrintCursorVisibility();
+
+	void PrintCursorVisibilityBuffer();
 
 public:
 	void SetInputMode(const FInputModeDataBase& InData) override;

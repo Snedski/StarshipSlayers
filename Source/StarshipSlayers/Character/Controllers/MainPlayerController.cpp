@@ -4,11 +4,15 @@
 #include "MainPlayerController.h"
 #include "InputMappingContext.h"
 #include "EnhancedInputSubsystems.h"
+#include "../../Dev/CustomCheatManager.h"
+#include "../../Dev/CustomUtility.h"
 
 AMainPlayerController::AMainPlayerController()
 {
 	PrimaryActorTick.bTickEvenWhenPaused = true;
 	bShouldPerformFullTickWhenPaused = false;
+
+	CheatClass = UCustomCheatManager::StaticClass();
 }
 
 void AMainPlayerController::BeginPlay()
@@ -31,9 +35,11 @@ void AMainPlayerController::Tick(float DeltaSeconds)
 		UpdateCameraManager(DeltaSeconds);
 	}
 
-	PrintUsingController(bIsUsingController);
-	PrintCurrentInputMode(bIsUsingController ? ECurrentInputMode::CIM_GAME : KeyboardInputMode);
-	PrintKeyboardInputMode(KeyboardInputMode);
+	PrintUsingController();
+	PrintCurrentInputMode();
+	PrintKeyboardInputMode();
+	PrintCursorVisibility();
+	PrintCursorVisibilityBuffer();
 }
 
 void AMainPlayerController::DetectAnyKey(FKey key)
@@ -79,6 +85,92 @@ void AMainPlayerController::DetectController(bool bUseController)
 				}
 			}
 		}
+	}
+}
+
+void AMainPlayerController::PrintUsingController()
+{
+	if(bIsUsingController)
+	{
+		UCustomUtility::CustomPrintString("USE CONTROLLER", "InputMode", FLinearColor::Green, 0.f);
+	}
+	else
+	{
+		UCustomUtility::CustomPrintString("USE KEYBOARD", "InputMode", FLinearColor::Red, 0.f);
+	}
+}
+
+void AMainPlayerController::PrintCurrentInputMode()
+{
+	ECurrentInputMode inputMode = bIsUsingController ? ECurrentInputMode::CIM_GAME : KeyboardInputMode;
+
+	switch(inputMode)
+	{
+		case CIM_GAME:
+		{
+			UCustomUtility::CustomPrintString("CURRENT INPUT MODE : GAME ONLY", "InputMode", FLinearColor::Blue, 0.f);
+			break;
+		}
+
+		case CIM_GAME_UI:
+		{
+			UCustomUtility::CustomPrintString("CURRENT INPUT MODE : GAME AND UI", "InputMode", FLinearColor::Blue, 0.f);
+			break;
+		}
+
+		case CIM_UI:
+		{
+			UCustomUtility::CustomPrintString("CURRENT INPUT MODE : UI ONLY", "InputMode", FLinearColor::Blue, 0.f);
+			break;
+		}
+	}
+}
+
+void AMainPlayerController::PrintKeyboardInputMode()
+{
+	switch(KeyboardInputMode)
+	{
+		case CIM_GAME:
+		{
+			UCustomUtility::CustomPrintString("KEYBOARD INPUT MODE : GAME ONLY", "InputMode", FLinearColor::Yellow, 0.f);
+			break;
+		}
+
+		case CIM_GAME_UI:
+		{
+			UCustomUtility::CustomPrintString("KEYBOARD INPUT MODE : GAME AND UI", "InputMode", FLinearColor::Yellow, 0.f);
+			break;
+		}
+
+		case CIM_UI:
+		{
+			UCustomUtility::CustomPrintString("KEYBOARD INPUT MODE : UI ONLY", "InputMode", FLinearColor::Yellow, 0.f);
+			break;
+		}
+	}
+}
+
+void AMainPlayerController::PrintCursorVisibility()
+{
+	if(bShowMouseCursor)
+	{
+		UCustomUtility::CustomPrintString("MOUSE CURSOR VISIBLE", "InputMode", FLinearColor::Green, 0.f);
+	}
+	else
+	{
+		UCustomUtility::CustomPrintString("MOUSE CURSOR NOT VISIBLE", "InputMode", FLinearColor::Red, 0.f);
+	}
+}
+
+void AMainPlayerController::PrintCursorVisibilityBuffer()
+{
+	if(bShowMouseCursorBuffer)
+	{
+		UCustomUtility::CustomPrintString("MOUSE CURSOR BUFFER VISIBLE", "InputMode", FLinearColor::Green, 0.f);
+	}
+	else
+	{
+		UCustomUtility::CustomPrintString("MOUSE CURSOR BUFFER NOT VISIBLE", "InputMode", FLinearColor::Red, 0.f);
 	}
 }
 
