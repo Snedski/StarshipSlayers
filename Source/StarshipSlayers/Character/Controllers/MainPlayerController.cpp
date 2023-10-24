@@ -24,6 +24,8 @@ void AMainPlayerController::BeginPlay()
 	inputSystem->AddMappingContext(InputMapping, 0);
 
 	SetInputMode(FInputModeGameOnly());
+
+	GetMousePosition(PreviousMousePosition.X, PreviousMousePosition.Y);
 }
 
 void AMainPlayerController::Tick(float DeltaSeconds)
@@ -33,6 +35,15 @@ void AMainPlayerController::Tick(float DeltaSeconds)
 	if(GetWorld()->IsPaused())
 	{
 		UpdateCameraManager(DeltaSeconds);
+	}
+
+	FVector2D currentMousePosition = FVector2D();
+	GetMousePosition(currentMousePosition.X, currentMousePosition.Y);
+
+	if(currentMousePosition != PreviousMousePosition)
+	{
+		PreviousMousePosition = currentMousePosition;
+		DetectController(false);
 	}
 
 	PrintUsingController();

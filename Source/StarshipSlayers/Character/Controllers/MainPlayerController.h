@@ -28,6 +28,8 @@ protected:
 	bool bShowMouseCursorBuffer = false;
 	bool bOverrideKeyboardInputMode = true;
 
+	FVector2D PreviousMousePosition = FVector2D();
+
 	ECurrentInputMode KeyboardInputMode = ECurrentInputMode::CIM_GAME;
 
 protected:
