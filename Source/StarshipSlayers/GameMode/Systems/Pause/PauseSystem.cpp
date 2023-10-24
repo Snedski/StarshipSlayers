@@ -4,6 +4,7 @@
 #include "PauseSystem.h"
 #include "../../../Widgets/Pause/PauseMenu.h"
 #include "../../../Character/Controllers/MainPlayerController.h"
+#include "Framework/Application/SlateApplication.h"
 
 UPauseSystem::UPauseSystem()
 {
@@ -30,10 +31,12 @@ void UPauseSystem::TogglePauseMenu()
 	if(bPauseMenuOpen)
 	{
 		controller->SetInputMode(FInputModeGameAndUI());
+		PauseMenu->GetContinueButton()->SetKeyboardFocus();
 	}
 	else
 	{
 		controller->SetInputMode(FInputModeGameOnly());
+		FSlateApplication::Get().SetAllUserFocusToGameViewport();
 	}
 }
 

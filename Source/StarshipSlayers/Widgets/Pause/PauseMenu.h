@@ -27,4 +27,14 @@ protected:
 	void OnQuit();
 
 	void InitPauseMenu(UPauseSystem* inPauseSystem);
+
+public:
+	UFUNCTION(BlueprintImplementableEvent)
+	UWidget* GetContinueButton();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	UWidget* GetOptionButton();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	UWidget* GetQuitButton();
 };

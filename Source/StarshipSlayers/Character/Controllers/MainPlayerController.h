@@ -8,13 +8,6 @@
 
 class UInputMappingContext;
 
-enum ECurrentInputMode : uint8
-{
-	CIM_GAME,
-	CIM_GAME_UI,
-	CIM_UI
-};
-
 UCLASS()
 class STARSHIPSLAYERS_API AMainPlayerController : public APlayerController
 {
@@ -26,11 +19,8 @@ protected:
 
 	bool bIsUsingController = false;
 	bool bShowMouseCursorBuffer = false;
-	bool bOverrideKeyboardInputMode = true;
 
 	FVector2D PreviousMousePosition = FVector2D();
-
-	ECurrentInputMode KeyboardInputMode = ECurrentInputMode::CIM_GAME;
 
 protected:
 	AMainPlayerController();
@@ -45,10 +35,6 @@ protected:
 	void DetectController(bool bUseController);
 
 	void PrintUsingController();
-
-	void PrintCurrentInputMode();
-
-	void PrintKeyboardInputMode();
 
 	void PrintCursorVisibility();
 

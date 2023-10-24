@@ -47,8 +47,6 @@ void AMainPlayerController::Tick(float DeltaSeconds)
 	}
 
 	PrintUsingController();
-	PrintCurrentInputMode();
-	PrintKeyboardInputMode();
 	PrintCursorVisibility();
 	PrintCursorVisibilityBuffer();
 }
@@ -67,34 +65,10 @@ void AMainPlayerController::DetectController(bool bUseController)
 		if(bUseController)
 		{
 			bShowMouseCursor = false;
-			bOverrideKeyboardInputMode = false;
-			SetInputMode(FInputModeGameOnly());
-			bOverrideKeyboardInputMode = true;
 		}
 		else
 		{
 			bShowMouseCursor = bShowMouseCursorBuffer;
-
-			switch(KeyboardInputMode)
-			{
-				case ECurrentInputMode::CIM_GAME:
-				{
-					SetInputMode(FInputModeGameOnly());
-					break;
-				}
-
-				case ECurrentInputMode::CIM_GAME_UI:
-				{
-					SetInputMode(FInputModeGameAndUI());
-					break;
-				}
-
-				case ECurrentInputMode::CIM_UI:
-				{
-					SetInputMode(FInputModeUIOnly());
-					break;
-				}
-			}
 		}
 	}
 }
@@ -108,56 +82,6 @@ void AMainPlayerController::PrintUsingController()
 	else
 	{
 		UCustomUtility::CustomPrintString("USE KEYBOARD", "InputMode", FLinearColor::Red, 0.f);
-	}
-}
-
-void AMainPlayerController::PrintCurrentInputMode()
-{
-	ECurrentInputMode inputMode = bIsUsingController ? ECurrentInputMode::CIM_GAME : KeyboardInputMode;
-
-	switch(inputMode)
-	{
-		case CIM_GAME:
-		{
-			UCustomUtility::CustomPrintString("CURRENT INPUT MODE : GAME ONLY", "InputMode", FLinearColor::Blue, 0.f);
-			break;
-		}
-
-		case CIM_GAME_UI:
-		{
-			UCustomUtility::CustomPrintString("CURRENT INPUT MODE : GAME AND UI", "InputMode", FLinearColor::Blue, 0.f);
-			break;
-		}
-
-		case CIM_UI:
-		{
-			UCustomUtility::CustomPrintString("CURRENT INPUT MODE : UI ONLY", "InputMode", FLinearColor::Blue, 0.f);
-			break;
-		}
-	}
-}
-
-void AMainPlayerController::PrintKeyboardInputMode()
-{
-	switch(KeyboardInputMode)
-	{
-		case CIM_GAME:
-		{
-			UCustomUtility::CustomPrintString("KEYBOARD INPUT MODE : GAME ONLY", "InputMode", FLinearColor::Yellow, 0.f);
-			break;
-		}
-
-		case CIM_GAME_UI:
-		{
-			UCustomUtility::CustomPrintString("KEYBOARD INPUT MODE : GAME AND UI", "InputMode", FLinearColor::Yellow, 0.f);
-			break;
-		}
-
-		case CIM_UI:
-		{
-			UCustomUtility::CustomPrintString("KEYBOARD INPUT MODE : UI ONLY", "InputMode", FLinearColor::Yellow, 0.f);
-			break;
-		}
 	}
 }
 
@@ -189,35 +113,25 @@ void AMainPlayerController::SetInputMode(const FInputModeDataBase& InData)
 {
 	Super::SetInputMode(InData);
 
-	if(bOverrideKeyboardInputMode)
-	{
-		UGameViewportClient* viewport = GetWorld()->GetGameViewport();
+	UGameViewportClient* viewport = GetWorld()->GetGameViewport();
 
-		if(viewport->IgnoreInput())
+	if(viewport->IgnoreInput())
+	{
+		bShowMouseCursorBuffer = true;
+	}
+	else
+	{
+		if(viewport->GetMouseCaptureMode() == EMouseCaptureMode::CaptureDuringMouseDown)
 		{
-			KeyboardInputMode = ECurrentInputMode::CIM_UI;
 			bShowMouseCursorBuffer = true;
 		}
 		else
 		{
-			if(viewport->GetMouseCaptureMode() == EMouseCaptureMode::CaptureDuringMouseDown)
-			{
-				KeyboardInputMode = ECurrentInputMode::CIM_GAME_UI;
-				bShowMouseCursorBuffer = true;
-			}
-			else
-			{
-				KeyboardInputMode = ECurrentInputMode::CIM_GAME;
-				bShowMouseCursorBuffer = false;
-			}
+			bShowMouseCursorBuffer = false;
 		}
 	}
 
-	if(bIsUsingController)
-	{
-		Super::SetInputMode(FInputModeGameOnly());
-	}
-	else
+	if(!bIsUsingController)
 	{
 		bShowMouseCursor = bShowMouseCursorBuffer;
 	}
