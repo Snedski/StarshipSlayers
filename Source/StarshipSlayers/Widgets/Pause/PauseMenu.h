@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "../CustomUserWidget.h"
 #include "PauseMenu.generated.h"
 
 class UPauseSystem;
 
 UCLASS()
-class STARSHIPSLAYERS_API UPauseMenu : public UUserWidget
+class STARSHIPSLAYERS_API UPauseMenu : public UCustomUserWidget
 {
 	friend UPauseSystem;
 

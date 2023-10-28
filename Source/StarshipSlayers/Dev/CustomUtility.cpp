@@ -8,7 +8,7 @@ TArray<FString> UCustomUtility::ActiveDebugTags = {};
 
 void UCustomUtility::CustomPrintString(const FString& inStr, const FString& tag, FLinearColor color, float duration)
 {
-	if(!ActiveDebugTags.Contains(tag))
+	if(tag != "" && !ActiveDebugTags.Contains(tag))
 	{
 		return;
 	}

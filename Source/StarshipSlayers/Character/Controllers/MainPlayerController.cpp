@@ -46,7 +46,7 @@ void AMainPlayerController::Tick(float DeltaSeconds)
 		DetectController(false);
 	}
 
-	PrintUsingController();
+	PrintUsingGamepad();
 	PrintCursorVisibility();
 	PrintCursorVisibilityBuffer();
 }
@@ -56,13 +56,13 @@ void AMainPlayerController::DetectAnyKey(FKey key)
 	DetectController(key.IsGamepadKey());
 }
 
-void AMainPlayerController::DetectController(bool bUseController)
+void AMainPlayerController::DetectController(bool bUseGamepad)
 {
-	if(bIsUsingController != bUseController)
+	if(bIsUsingGamepad != bUseGamepad)
 	{
-		bIsUsingController = bUseController;
+		bIsUsingGamepad = bUseGamepad;
 	
-		if(bUseController)
+		if(bIsUsingGamepad)
 		{
 			bShowMouseCursor = false;
 		}
@@ -70,14 +70,18 @@ void AMainPlayerController::DetectController(bool bUseController)
 		{
 			bShowMouseCursor = bShowMouseCursorBuffer;
 		}
+
+		OnControllerTypeChanged.Broadcast(bIsUsingGamepad);
+		PreviousMousePosition = FVector2D::ZeroVector;
+		SetMouseLocation(PreviousMousePosition.X, PreviousMousePosition.Y);
 	}
 }
 
-void AMainPlayerController::PrintUsingController()
+void AMainPlayerController::PrintUsingGamepad()
 {
-	if(bIsUsingController)
+	if(bIsUsingGamepad)
 	{
-		UCustomUtility::CustomPrintString("USE CONTROLLER", "InputMode", FLinearColor::Green, 0.f);
+		UCustomUtility::CustomPrintString("USE GAMEPAD", "InputMode", FLinearColor::Green, 0.f);
 	}
 	else
 	{
@@ -131,8 +135,13 @@ void AMainPlayerController::SetInputMode(const FInputModeDataBase& InData)
 		}
 	}
 
-	if(!bIsUsingController)
+	if(!bIsUsingGamepad)
 	{
 		bShowMouseCursor = bShowMouseCursorBuffer;
 	}
+}
+
+bool AMainPlayerController::IsUsingGamepad()
+{
+	return bIsUsingGamepad;
 }

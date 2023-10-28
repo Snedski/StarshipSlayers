@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerController.h"
 #include "MainPlayerController.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FControllerTypeEvent, bool, bUseGamepad);
+
 class UInputMappingContext;
 
 UCLASS()
@@ -17,10 +19,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
 	UInputMappingContext* InputMapping = nullptr;
 
-	bool bIsUsingController = false;
+	bool bIsUsingGamepad = false;
 	bool bShowMouseCursorBuffer = false;
 
 	FVector2D PreviousMousePosition = FVector2D();
+
+public:
+	FControllerTypeEvent OnControllerTypeChanged;
 
 protected:
 	AMainPlayerController();
@@ -32,9 +37,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void DetectAnyKey(FKey key);
 
-	void DetectController(bool bUseController);
-
-	void PrintUsingController();
+	void PrintUsingGamepad();
 
 	void PrintCursorVisibility();
 
@@ -42,4 +45,8 @@ protected:
 
 public:
 	void SetInputMode(const FInputModeDataBase& InData) override;
+
+	void DetectController(bool bUseGamepad);
+
+	bool IsUsingGamepad();
 };

@@ -31,7 +31,7 @@ void UPauseSystem::TogglePauseMenu()
 	if(bPauseMenuOpen)
 	{
 		controller->SetInputMode(FInputModeGameAndUI());
-		PauseMenu->GetContinueButton()->SetKeyboardFocus();
+		PauseMenu->SetFocus();
 	}
 	else
 	{
