@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "../CustomUserWidget.h"
 #include "FadeWidget.generated.h"
 
 UCLASS()
-class STARSHIPSLAYERS_API UFadeWidget : public UUserWidget
+class STARSHIPSLAYERS_API UFadeWidget : public UCustomUserWidget
 {
 	GENERATED_BODY()
 

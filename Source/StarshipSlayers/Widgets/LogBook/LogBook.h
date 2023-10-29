@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "../CustomUserWidget.h"
 #include "LogBook.generated.h"
 
 UCLASS()
-class STARSHIPSLAYERS_API ULogBook : public UUserWidget
+class STARSHIPSLAYERS_API ULogBook : public UCustomUserWidget
 {
 	GENERATED_BODY()
 };

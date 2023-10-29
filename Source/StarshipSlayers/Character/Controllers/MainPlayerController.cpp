@@ -72,7 +72,6 @@ void AMainPlayerController::DetectController(bool bUseGamepad)
 		}
 
 		OnControllerTypeChanged.Broadcast(bIsUsingGamepad);
-		PreviousMousePosition = FVector2D::ZeroVector;
 		SetMouseLocation(PreviousMousePosition.X, PreviousMousePosition.Y);
 	}
 }

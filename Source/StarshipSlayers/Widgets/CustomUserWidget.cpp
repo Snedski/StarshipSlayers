@@ -20,12 +20,6 @@ void UCustomUserWidget::NativeOnInitialized()
 	MainPlayerController->OnControllerTypeChanged.AddUniqueDynamic(this, &UCustomUserWidget::OnControllerTypeChanged);
 }
 
-FReply UCustomUserWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
-{
-	MainPlayerController->DetectController(InKeyEvent.GetKey().IsGamepadKey());
-	return FReply::Handled();
-}
-
 void UCustomUserWidget::OnControllerTypeChanged(bool bUseGamepad)
 {
 	SetCursor(bUseGamepad ? EMouseCursor::None : EMouseCursor::Default);

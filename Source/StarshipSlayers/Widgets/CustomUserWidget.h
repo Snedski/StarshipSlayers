@@ -22,8 +22,6 @@ protected:
 
 	void NativeOnInitialized() override;
 
-	FReply NativeOnKeyDown( const FGeometry& InGeometry, const FKeyEvent& InKeyEvent ) override;
-
 	UFUNCTION()
 	void OnControllerTypeChanged(bool bUseGamepad);
 };

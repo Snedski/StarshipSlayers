@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "../CustomUserWidget.h"
 #include "MainMenu.generated.h"
 
 UCLASS()
-class STARSHIPSLAYERS_API UMainMenu : public UUserWidget
+class STARSHIPSLAYERS_API UMainMenu : public UCustomUserWidget
 {
 	GENERATED_BODY()
 	

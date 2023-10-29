@@ -31,12 +31,10 @@ void UPauseSystem::TogglePauseMenu()
 	if(bPauseMenuOpen)
 	{
 		controller->SetInputMode(FInputModeGameAndUI());
-		PauseMenu->SetFocus();
 	}
 	else
 	{
 		controller->SetInputMode(FInputModeGameOnly());
-		FSlateApplication::Get().SetAllUserFocusToGameViewport();
 	}
 }
 
