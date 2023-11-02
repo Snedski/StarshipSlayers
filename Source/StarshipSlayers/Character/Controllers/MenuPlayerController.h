@@ -12,5 +12,5 @@ class STARSHIPSLAYERS_API AMenuPlayerController : public AMainPlayerController
 	GENERATED_BODY()
 	
 protected:
-	void BeginPlay() override;
+	void SetInputMode(const FInputModeDataBase& InData) override;
 };

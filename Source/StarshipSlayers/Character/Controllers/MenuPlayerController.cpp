@@ -3,8 +3,7 @@
 
 #include "MenuPlayerController.h"
 
-void AMenuPlayerController::BeginPlay()
+void AMenuPlayerController::SetInputMode(const FInputModeDataBase& InData)
 {
-	Super::BeginPlay();
-	SetInputMode(FInputModeGameAndUI());
+	Super::SetInputMode(FInputModeGameAndUI());
 }

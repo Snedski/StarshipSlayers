@@ -8,6 +8,8 @@ void AMenuGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameAndUI());
 	MainMenu = CreateWidget<UMainMenu>(GetWorld()->GetFirstPlayerController(), MainMenuClass, "Main Menu");
 	MainMenu->AddToViewport();
+	MainMenu->GetPlayButton()->SetFocus();
 }
