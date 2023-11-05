@@ -7,6 +7,7 @@
 #include "Door.generated.h"
 
 class UBoxComponent;
+class UAudioComponent;
 
 UCLASS()
 class STARSHIPSLAYERS_API ADoor : public AActor
@@ -22,6 +23,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
 	UStaticMeshComponent* DoorMesh = nullptr;
+
+	UPROPERTY(VisibleAnywhere, meta = (Hidden))
+	UAudioComponent* DoorOpenSound = nullptr;
+
+	UPROPERTY(VisibleAnywhere, meta = (Hidden))
+	UAudioComponent* DoorCloseSound = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "_Settings")
 	float AnimationTime = 1.f;

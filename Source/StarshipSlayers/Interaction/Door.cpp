@@ -4,6 +4,7 @@
 #include "Door.h"
 #include "Components/BoxComponent.h"
 #include "../Character/DaveCharacter.h"
+#include "Components/AudioComponent.h"
 
 ADoor::ADoor()
 {
@@ -19,11 +20,16 @@ ADoor::ADoor()
 	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>("Door");
 	DoorMesh->AttachToComponent(Root, FAttachmentTransformRules::KeepRelativeTransform);
 
+	DoorOpenSound = CreateDefaultSubobject<UAudioComponent>("Open Sound");
+	DoorOpenSound->AttachToComponent(Root, FAttachmentTransformRules::KeepRelativeTransform);
+
+	DoorCloseSound = CreateDefaultSubobject<UAudioComponent>("Close Sound");
+	DoorCloseSound->AttachToComponent(Root, FAttachmentTransformRules::KeepRelativeTransform);
+
 	TriggerBox->OnComponentBeginOverlap.RemoveAll(this);
 	TriggerBox->OnComponentEndOverlap.RemoveAll(this);
 	TriggerBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ADoor::OnEnterZone);
 	TriggerBox->OnComponentEndOverlap.AddUniqueDynamic(this, &ADoor::OnExitZone);
-
 }
 
 void ADoor::Tick(float DeltaSeconds)
@@ -60,6 +66,8 @@ void ADoor::OnEnterZone(UPrimitiveComponent* comp, AActor* otherActor, UPrimitiv
 	if(otherActor->GetClass()->IsChildOf(ADaveCharacter::StaticClass()))
 	{
 		bOpen = true;
+		DoorCloseSound->Stop();
+		DoorOpenSound->Play();
 		SetActorTickEnabled(true);
 	}
 }
@@ -69,6 +77,8 @@ void ADoor::OnExitZone(UPrimitiveComponent* comp, AActor* otherActor, UPrimitive
 	if(otherActor->GetClass()->IsChildOf(ADaveCharacter::StaticClass()))
 	{
 		bOpen = false;
+		DoorOpenSound->Stop();
+		DoorCloseSound->Play();
 		SetActorTickEnabled(true);
 	}
 }
