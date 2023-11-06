@@ -3,6 +3,7 @@
 
 #include "MainGameMode.h"
 #include "Managers/Save/SaveManager.h"
+#include "Managers/ChipMode/ChipModeManager.h"
 #include "Systems/Fade/FadeSystem.h"
 
 AMainGameMode* AMainGameMode::MainGameModeInstance = nullptr;
@@ -13,6 +14,7 @@ AMainGameMode::AMainGameMode()
 	PrimaryActorTick.bStartWithTickEnabled = false;
 
 	SaveManager = CreateDefaultSubobject<USaveManager>("Save Manager");
+	ChipModeManager = CreateDefaultSubobject<UChipModeManager>("ChipMode Manager");
 }
 
 void AMainGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
