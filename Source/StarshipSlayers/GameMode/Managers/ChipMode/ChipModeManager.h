@@ -6,6 +6,8 @@
 #include "../Main/MainManager.h"
 #include "ChipModeManager.generated.h"
 
+class UChipModeData;
+
 UCLASS()
 class STARSHIPSLAYERS_API UChipModeManager : public UMainManager
 {
@@ -13,4 +15,13 @@ class STARSHIPSLAYERS_API UChipModeManager : public UMainManager
 	
 protected:
 	static UChipModeManager* GetInstance();
+
+	UPROPERTY(EditAnywhere, Category = "_Settings")
+	UChipModeData* DefaultMode = nullptr;
+
+	UPROPERTY(EditAnywhere, Category = "_Settings")
+	TArray<UChipModeData*> ChipModeDatas = {};
+
+protected:
+	void InitManager() override;
 };

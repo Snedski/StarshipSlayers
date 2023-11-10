@@ -22,6 +22,17 @@ void AMainGameMode::InitGame(const FString& MapName, const FString& Options, FSt
 	Super::InitGame(MapName, Options, ErrorMessage);
 
 	MainGameModeInstance = this;
+
+	TArray<UMainManager*> managerComponents = {};
+	GetComponents(managerComponents);
+
+	for(UMainManager* manager : managerComponents)
+	{
+		if(manager->bEnable)
+		{
+			manager->InitManager();
+		}
+	}
 }
 
 void AMainGameMode::BeginPlay()

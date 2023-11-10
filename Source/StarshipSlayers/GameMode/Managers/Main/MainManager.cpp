@@ -2,6 +2,7 @@
 
 
 #include "MainManager.h"
+#include "../../MainGameMode.h"
 
 UMainManager::UMainManager()
 {
