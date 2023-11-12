@@ -32,3 +32,45 @@ void UChipModeManager::InitManager()
 		dataLayerManager->SetDataLayerRuntimeState(dataLayerAsset, EDataLayerRuntimeState::Activated);
 	}
 }
+
+void UChipModeManager::ActivateChipModeSelection(bool bActive)
+{
+	UChipModeManager* inst = GetInstance();
+
+	if(inst->bEnable)
+	{
+		inst->bChipModeSelectionActive = bActive;
+	}
+}
+
+bool UChipModeManager::IsChipModeSelectionActive()
+{
+	UChipModeManager* inst = GetInstance();
+
+	if(inst->bEnable)
+	{
+		return inst->bChipModeSelectionActive;
+	}
+
+	return false;
+}
+
+TArray<FString> UChipModeManager::GetChipModeNameList()
+{
+	UChipModeManager* inst = GetInstance();
+
+	if(inst->bEnable)
+	{
+		TArray<FString> result = {};
+		result.Add(inst->DefaultMode->ChipModeName);
+
+		for(UChipModeData* data : inst->ChipModeDatas)
+		{
+			result.Add(data->ChipModeName);
+		}
+
+		return result;
+	}
+
+	return {};
+}

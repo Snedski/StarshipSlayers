@@ -3,6 +3,7 @@
 
 #include "CustomCheatManager.h"
 #include "CustomUtility.h"
+#include "../GameMode/Managers/ChipMode/ChipModeManager.h"
 
 void UCustomCheatManager::UpdateDebugTagVisiblity(FString tag, bool bVisible)
 {
@@ -16,4 +17,9 @@ void UCustomCheatManager::UpdateDebugTagVisiblity(FString tag, bool bVisible)
 	{
 		UCustomUtility::ActiveDebugTags.Remove(tag);
 	}
+}
+
+void UCustomCheatManager::ActivateChipModeSelection(bool bActive)
+{
+	UChipModeManager::ActivateChipModeSelection(bActive);
 }

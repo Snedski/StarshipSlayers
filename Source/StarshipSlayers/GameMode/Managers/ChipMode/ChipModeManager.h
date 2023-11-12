@@ -22,6 +22,17 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "_Settings")
 	TArray<UChipModeData*> ChipModeDatas = {};
 
+	bool bChipModeSelectionActive = false;
+
 protected:
 	void InitManager() override;
+
+public:
+	static void ActivateChipModeSelection(bool bActive);
+
+	UFUNCTION(BlueprintPure, DisplayName = "ChipModeManager - IsChipModeSelectionActive")
+	static bool IsChipModeSelectionActive();
+
+	UFUNCTION(BlueprintPure, DisplayName = "ChipModeManager - GetChipModeNameList")
+	static TArray<FString> GetChipModeNameList();
 };

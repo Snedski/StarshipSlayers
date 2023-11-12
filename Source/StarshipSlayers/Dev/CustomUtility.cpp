@@ -3,6 +3,7 @@
 
 #include "CustomUtility.h"
 #include "CustomCheatManager.h"
+#include "../Character/DaveCharacter.h"
 
 TArray<FString> UCustomUtility::ActiveDebugTags = {};
 
@@ -24,4 +25,10 @@ void UCustomUtility::CustomPrintString(const FString& inStr, const FString& tag,
 
 		GEngine->AddOnScreenDebugMessage((uint64) - 1, duration, color.ToFColor(true), inStr);
 	}
+}
+
+ADaveCharacter* UCustomUtility::GetDaveCharacter(UObject* worldContext)
+{
+	UWorld* world = GEngine->GetWorldFromContextObject(worldContext, EGetWorldErrorMode::ReturnNull);
+	return (ADaveCharacter*) world->GetFirstPlayerController()->GetPawn();
 }

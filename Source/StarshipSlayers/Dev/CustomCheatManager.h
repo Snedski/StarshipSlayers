@@ -14,4 +14,7 @@ class STARSHIPSLAYERS_API UCustomCheatManager : public UCheatManager
 public:
 	UFUNCTION(exec)
 	void UpdateDebugTagVisiblity(FString tag, bool bVisible);
+
+	UFUNCTION(exec)
+	void ActivateChipModeSelection(bool bActive);
 };
