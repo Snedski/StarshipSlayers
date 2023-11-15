@@ -3,7 +3,6 @@
 
 #include "PauseSystem.h"
 #include "../../../Widgets/Pause/PauseMenu.h"
-#include "../../../Character/Controllers/MainPlayerController.h"
 #include "Framework/Application/SlateApplication.h"
 
 UPauseSystem::UPauseSystem()
@@ -21,7 +20,7 @@ void UPauseSystem::SetupSystem()
 
 void UPauseSystem::TogglePauseMenu()
 {
-	AMainPlayerController* controller = (AMainPlayerController*) GetWorld()->GetFirstPlayerController();
+	APlayerController* controller = GetWorld()->GetFirstPlayerController();
 
 	bPauseMenuOpen = !bPauseMenuOpen;
 

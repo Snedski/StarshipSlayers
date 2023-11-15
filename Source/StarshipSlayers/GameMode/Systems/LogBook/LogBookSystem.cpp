@@ -4,7 +4,6 @@
 #include "LogBookSystem.h"
 #include "../../../Widgets/LogBook/LogBook.h"
 #include "../Fade/FadeSystem.h"
-#include "../../../Character/Controllers/MainPlayerController.h"
 
 ULogBookSystem::ULogBookSystem()
 {
@@ -44,7 +43,7 @@ bool ULogBookSystem::InTransition()
 void ULogBookSystem::OnToggleFadeIn()
 {
 	AFadeSystem::GetInstance()->OnFadeIn.RemoveDynamic(this, &ULogBookSystem::OnToggleFadeIn);
-	AMainPlayerController* controller = (AMainPlayerController*) GetWorld()->GetFirstPlayerController();
+	APlayerController* controller = GetWorld()->GetFirstPlayerController();
 
 	LogBook->SetVisibility(bLogBookOpen ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 	controller->SetPause(bLogBookOpen);

@@ -7,6 +7,7 @@
 #include "ChipModeManager.generated.h"
 
 class UChipModeData;
+class UChipModeSelection;
 
 UCLASS()
 class STARSHIPSLAYERS_API UChipModeManager : public UMainManager
@@ -22,17 +23,38 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "_Settings")
 	TArray<UChipModeData*> ChipModeDatas = {};
 
+	UPROPERTY(EditAnywhere, Category = "_Settings\|Debug")
+	TSoftClassPtr<UChipModeSelection> ChipModeSelectionSoft = nullptr;
+
+	UPROPERTY()
+	UChipModeSelection* ChipModeSelection = nullptr;
+
+	UPROPERTY()
+	UChipModeData* ChipModeToLoad = nullptr;
+
 	bool bChipModeSelectionActive = false;
+	bool bInProcess = false;
 
 protected:
 	void InitManager() override;
 
+	void ShowChipModeSelectionWidget();
+
+	UFUNCTION()
+	void OnChipModeFadeIn();
+
+	UFUNCTION()
+	void OnChipModeFadeOut();
+
 public:
 	static void ActivateChipModeSelection(bool bActive);
 
-	UFUNCTION(BlueprintPure, DisplayName = "ChipModeManager - IsChipModeSelectionActive")
-	static bool IsChipModeSelectionActive();
-
 	UFUNCTION(BlueprintPure, DisplayName = "ChipModeManager - GetChipModeNameList")
 	static TArray<FString> GetChipModeNameList();
+
+	UFUNCTION(BlueprintCallable, DisplayName = "ChipModeManager - AccessChipMode")
+	static void AccessChipMode(UChipModeData* chipModeData);
+
+	UFUNCTION(BlueprintCallable, DisplayName = "ChipModeManager - AccessChipModeByName")
+	static void AccessChipModeByName(FString chipModeName);
 };
