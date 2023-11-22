@@ -8,6 +8,7 @@
 #include "WorldPartition/DataLayer/DataLayerInstance.h"
 #include "WorldPartition/DataLayer/DataLayerManager.h"
 #include "../../../Widgets/Debug/ChipModeSelection.h"
+#include "../../../Widgets/Debug/ChipModeStartingPosRegistration.h"
 #include "Engine/StreamableManager.h"
 #include "Engine/AssetManager.h"
 #include "../../Systems/Fade/FadeSystem.h"
@@ -23,6 +24,7 @@ void UChipModeManager::InitManager()
 
 	AWorldDataLayers* dataLayers = GetWorld()->GetWorldDataLayers();
 	UDataLayerManager* dataLayerManager = GetWorld()->GetDataLayerManager();
+	CurrentChipMode = DefaultMode;
 
 	for(UDataLayerAsset* dataLayerAsset : DefaultMode->LoadedLayers)
 	{
@@ -32,8 +34,19 @@ void UChipModeManager::InitManager()
 
 void UChipModeManager::ShowChipModeSelectionWidget()
 {
+	bInProcess = false;
 	ChipModeSelection = CreateWidget<UChipModeSelection>(GetWorld()->GetFirstPlayerController(), ChipModeSelectionSoft.Get());
 	ChipModeSelection->AddToViewport(1);
+
+	APlayerController* controller = GetWorld()->GetFirstPlayerController();
+	controller->SetInputMode(FInputModeGameAndUI());
+}
+
+void UChipModeManager::ShowChipModeStartingPosRegistrationWidget()
+{
+	bInProcess = false;
+	ChipModeStartingPosRegistration = CreateWidget<UChipModeStartingPosRegistration>(GetWorld()->GetFirstPlayerController(), ChipModeStartingPosRegistrationSoft.Get());
+	ChipModeStartingPosRegistration->AddToViewport(1);
 
 	APlayerController* controller = GetWorld()->GetFirstPlayerController();
 	controller->SetInputMode(FInputModeGameAndUI());
@@ -53,12 +66,32 @@ void UChipModeManager::OnChipModeFadeIn()
 		return true;
 	});
 
-	for(UDataLayerAsset* dataLayerAsset : ChipModeToLoad->LoadedLayers)
+	for(UDataLayerAsset* dataLayerAsset : CurrentChipMode->LoadedLayers)
 	{
 		dataLayerManager->SetDataLayerRuntimeState(dataLayerAsset, EDataLayerRuntimeState::Activated);
 	}
 
-	ChipModeToLoad = nullptr;
+	APlayerController* controller = GetWorld()->GetFirstPlayerController();
+	APawn* pawn = controller->GetPawn();
+
+	if(CurrentChipMode == DefaultMode)
+	{
+		pawn->SetActorLocation(LatestLocation);
+		pawn->SetActorRotation(LatestRotation);
+		controller->SetControlRotation(LatestRotation);
+	}
+	else
+	{
+		LatestLocation = pawn->GetActorLocation();
+		LatestRotation = pawn->GetControlRotation();
+
+		if(CurrentChipMode->StartLocation != FVector::ZeroVector && CurrentChipMode->StartRotation != FRotator::ZeroRotator)
+		{
+			pawn->SetActorLocation(CurrentChipMode->StartLocation);
+			pawn->SetActorRotation(CurrentChipMode->StartRotation);
+			controller->SetControlRotation(CurrentChipMode->StartRotation);
+		}
+	}
 }
 
 void UChipModeManager::OnChipModeFadeOut()
@@ -73,8 +106,9 @@ void UChipModeManager::ActivateChipModeSelection(bool bActive)
 
 	if(inst->bEnable)
 	{
-		if(bActive && !IsValid(inst->ChipModeSelection))
+		if(bActive && !IsValid(inst->ChipModeSelection) && !inst->bInProcess)
 		{
+			inst->bInProcess = true;
 			const FSoftObjectPath& path = inst->ChipModeSelectionSoft.ToSoftObjectPath();
 			FStreamableDelegate del = FStreamableDelegate::CreateUObject(inst, &UChipModeManager::ShowChipModeSelectionWidget);
 
@@ -89,6 +123,28 @@ void UChipModeManager::ActivateChipModeSelection(bool bActive)
 			controller->SetInputMode(FInputModeGameOnly());
 		}
 	}
+}
+
+void UChipModeManager::LoadChipModeStartingPosRegistrationWidget()
+{
+#if !WITH_EDITOR
+	return;
+#else
+	UChipModeManager* inst = GetInstance();
+
+	if(inst->bEnable && !IsValid(inst->ChipModeStartingPosRegistration) && !inst->bInProcess)
+	{
+		inst->bInProcess = true;
+
+		APlayerController* controller = inst->GetWorld()->GetFirstPlayerController();
+		controller->SetPause(true);
+
+		const FSoftObjectPath& path = inst->ChipModeStartingPosRegistrationSoft.ToSoftObjectPath();
+		FStreamableDelegate del = FStreamableDelegate::CreateUObject(inst, &UChipModeManager::ShowChipModeStartingPosRegistrationWidget);
+
+		UAssetManager::GetStreamableManager().RequestAsyncLoad(path, del);
+	}
+#endif
 }
 
 TArray<FString> UChipModeManager::GetChipModeNameList()
@@ -119,7 +175,7 @@ void UChipModeManager::AccessChipMode(UChipModeData* chipModeData)
 	{
 		if(!inst->bInProcess)
 		{
-			inst->ChipModeToLoad = chipModeData;
+			inst->CurrentChipMode = chipModeData;
 			inst->bInProcess = true;
 
 			AFadeSystem::GetInstance()->OnFadeIn.AddUniqueDynamic(inst, &UChipModeManager::OnChipModeFadeIn);
@@ -149,5 +205,38 @@ void UChipModeManager::AccessChipModeByName(FString chipModeName)
 				return;
 			}
 		}
+	}
+}
+
+void UChipModeManager::RegisterChipModeStartingPosition(FString chipModeName)
+{
+	UChipModeManager* inst = GetInstance();
+
+	if(inst->bEnable)
+	{
+		APlayerController* controller = inst->GetWorld()->GetFirstPlayerController();
+
+		if(chipModeName != inst->DefaultMode->ChipModeName)
+		{
+			for(UChipModeData* chipModeData : inst->ChipModeDatas)
+			{
+				if(chipModeName == chipModeData->ChipModeName)
+				{
+					APawn* pawn = controller->GetPawn();
+					chipModeData->StartLocation = pawn->GetActorLocation();
+					chipModeData->StartRotation = pawn->GetControlRotation();
+
+					if(!chipModeData->GetPackage()->IsDirty())
+					{
+						chipModeData->GetPackage()->SetDirtyFlag(true);
+					}
+				}
+			}
+		}
+
+		inst->ChipModeStartingPosRegistration->RemoveFromParent();
+		inst->ChipModeStartingPosRegistration = nullptr;
+		controller->SetInputMode(FInputModeGameOnly());
+		controller->SetPause(false);
 	}
 }

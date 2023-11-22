@@ -17,4 +17,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TArray<UDataLayerAsset*> LoadedLayers = {};
+
+	UPROPERTY(VisibleAnywhere)
+	FVector StartLocation = FVector::ZeroVector;
+
+	UPROPERTY(VisibleAnywhere)
+	FRotator StartRotation = FRotator::ZeroRotator;
 };

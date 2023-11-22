@@ -17,4 +17,7 @@ public:
 
 	UFUNCTION(exec)
 	void ActivateChipModeSelection(bool bActive);
+
+	UFUNCTION(exec)
+	void RegisterChipModeStartingPosition();
 };

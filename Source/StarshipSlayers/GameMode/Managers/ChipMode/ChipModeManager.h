@@ -8,6 +8,7 @@
 
 class UChipModeData;
 class UChipModeSelection;
+class UChipModeStartingPosRegistration;
 
 UCLASS()
 class STARSHIPSLAYERS_API UChipModeManager : public UMainManager
@@ -26,12 +27,20 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "_Settings\|Debug")
 	TSoftClassPtr<UChipModeSelection> ChipModeSelectionSoft = nullptr;
 
+	UPROPERTY(EditAnywhere, Category = "_Settings\|Debug")
+	TSoftClassPtr<UChipModeStartingPosRegistration> ChipModeStartingPosRegistrationSoft = nullptr;
+
 	UPROPERTY()
 	UChipModeSelection* ChipModeSelection = nullptr;
 
 	UPROPERTY()
-	UChipModeData* ChipModeToLoad = nullptr;
+	UChipModeStartingPosRegistration* ChipModeStartingPosRegistration = nullptr;
 
+	UPROPERTY()
+	UChipModeData* CurrentChipMode = nullptr;
+
+	FVector LatestLocation = FVector::ZeroVector;
+	FRotator LatestRotation = FRotator::ZeroRotator;
 	bool bChipModeSelectionActive = false;
 	bool bInProcess = false;
 
@@ -39,6 +48,8 @@ protected:
 	void InitManager() override;
 
 	void ShowChipModeSelectionWidget();
+
+	void ShowChipModeStartingPosRegistrationWidget();
 
 	UFUNCTION()
 	void OnChipModeFadeIn();
@@ -49,6 +60,8 @@ protected:
 public:
 	static void ActivateChipModeSelection(bool bActive);
 
+	static void LoadChipModeStartingPosRegistrationWidget();
+
 	UFUNCTION(BlueprintPure, DisplayName = "ChipModeManager - GetChipModeNameList")
 	static TArray<FString> GetChipModeNameList();
 
@@ -57,4 +70,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, DisplayName = "ChipModeManager - AccessChipModeByName")
 	static void AccessChipModeByName(FString chipModeName);
+
+	UFUNCTION(BlueprintCallable, DisplayName = "ChipModeManager - RegisterChipModeStartingPosition")
+	static void RegisterChipModeStartingPosition(FString chipModeName);
 };

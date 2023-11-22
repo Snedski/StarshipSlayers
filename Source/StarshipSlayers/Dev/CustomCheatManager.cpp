@@ -23,3 +23,8 @@ void UCustomCheatManager::ActivateChipModeSelection(bool bActive)
 {
 	UChipModeManager::ActivateChipModeSelection(bActive);
 }
+
+void UCustomCheatManager::RegisterChipModeStartingPosition()
+{
+	UChipModeManager::LoadChipModeStartingPosRegistrationWidget();
+}
