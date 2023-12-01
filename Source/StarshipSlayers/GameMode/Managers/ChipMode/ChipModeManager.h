@@ -45,7 +45,11 @@ protected:
 	bool bInProcess = false;
 
 protected:
+	UChipModeManager();
+
 	void InitManager() override;
+
+	void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
 	void ShowChipModeSelectionWidget();
 

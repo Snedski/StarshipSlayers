@@ -12,10 +12,18 @@
 #include "Engine/StreamableManager.h"
 #include "Engine/AssetManager.h"
 #include "../../Systems/Fade/FadeSystem.h"
+#include "WorldPartition/WorldPartitionSubsystem.h"
+#include "WorldPartition/DataLayer/DataLayerAsset.h"
 
 UChipModeManager* UChipModeManager::GetInstance()
 {
 	return AMainGameMode::MainGameModeInstance->ChipModeManager;
+}
+
+UChipModeManager::UChipModeManager()
+{
+	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bStartWithTickEnabled = false;
 }
 
 void UChipModeManager::InitManager()
@@ -29,6 +37,21 @@ void UChipModeManager::InitManager()
 	for(UDataLayerAsset* dataLayerAsset : DefaultMode->LoadedLayers)
 	{
 		dataLayerManager->SetDataLayerRuntimeState(dataLayerAsset, EDataLayerRuntimeState::Activated);
+	}
+}
+
+void UChipModeManager::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	UWorldPartitionSubsystem* worldPartition = UWorld::GetSubsystem<UWorldPartitionSubsystem>(GetWorld());
+
+	if(worldPartition->IsAllStreamingCompleted())
+	{
+		APlayerController* controller = GetWorld()->GetFirstPlayerController();
+		SetComponentTickEnabled(false);
+
+		AFadeSystem::GetInstance()->FadeOut(FFadeData());
 	}
 }
 
@@ -73,6 +96,7 @@ void UChipModeManager::OnChipModeFadeIn()
 
 	APlayerController* controller = GetWorld()->GetFirstPlayerController();
 	APawn* pawn = controller->GetPawn();
+	SetComponentTickEnabled(true);
 
 	if(CurrentChipMode == DefaultMode)
 	{
@@ -178,9 +202,24 @@ void UChipModeManager::AccessChipMode(UChipModeData* chipModeData)
 			inst->CurrentChipMode = chipModeData;
 			inst->bInProcess = true;
 
+			UWorld* world = inst->GetWorld();
+			AWorldDataLayers* dataLayers = world->GetWorldDataLayers();
+			UDataLayerManager* dataLayerManager = world->GetDataLayerManager();
+
+			for(UDataLayerAsset* dataLayerAsset : inst->CurrentChipMode->LoadedLayers)
+			{
+				const UDataLayerInstance* dataLayerInstance = dataLayerManager->GetDataLayerInstanceFromAsset(dataLayerAsset);
+				EDataLayerRuntimeState currentState = dataLayerManager->GetDataLayerInstanceRuntimeState(dataLayerInstance);
+
+				if(currentState == EDataLayerRuntimeState::Unloaded)
+				{
+					dataLayerManager->SetDataLayerRuntimeState(dataLayerAsset, EDataLayerRuntimeState::Loaded);
+				}
+			}
+
 			AFadeSystem::GetInstance()->OnFadeIn.AddUniqueDynamic(inst, &UChipModeManager::OnChipModeFadeIn);
 			AFadeSystem::GetInstance()->OnFadeOut.AddUniqueDynamic(inst, &UChipModeManager::OnChipModeFadeOut);
-			AFadeSystem::GetInstance()->FadeInOut(FFadeData());
+			AFadeSystem::GetInstance()->FadeIn(FFadeData());
 		}
 	}
 }
