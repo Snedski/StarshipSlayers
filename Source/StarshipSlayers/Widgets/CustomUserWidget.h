@@ -31,6 +31,8 @@ protected:
 
 	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
+	FReply NativeOnPreviewKeyDown( const FGeometry& InGeometry, const FKeyEvent& InKeyEvent ) override;
+
 	UFUNCTION()
 	void OnControllerTypeChanged(bool bUseGamepad);
 

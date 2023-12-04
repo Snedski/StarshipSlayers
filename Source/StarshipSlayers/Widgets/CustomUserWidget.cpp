@@ -52,6 +52,13 @@ void UCustomUserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
 	}
 }
 
+FReply UCustomUserWidget::NativeOnPreviewKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
+{
+	MainPlayerController->DetectController(InKeyEvent.GetKey().IsGamepadKey());
+
+	return FReply::Unhandled();
+}
+
 void UCustomUserWidget::OnControllerTypeChanged(bool bUseGamepad)
 {
 	SetCursor(bUseGamepad ? EMouseCursor::None : EMouseCursor::Default);
