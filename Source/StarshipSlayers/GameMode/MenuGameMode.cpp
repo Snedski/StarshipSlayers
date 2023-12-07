@@ -11,5 +11,4 @@ void AMenuGameMode::BeginPlay()
 	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameAndUI());
 	MainMenu = CreateWidget<UMainMenu>(GetWorld()->GetFirstPlayerController(), MainMenuClass, "Main Menu");
 	MainMenu->AddToViewport();
-	MainMenu->GetPlayButton()->SetFocus();
 }

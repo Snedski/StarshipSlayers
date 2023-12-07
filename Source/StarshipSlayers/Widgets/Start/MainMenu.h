@@ -20,8 +20,4 @@ protected:
 
 	UFUNCTION()
 	void OnPlayFadeIn();
-
-public:
-	UFUNCTION(BlueprintImplementableEvent)
-	UWidget* GetPlayButton();
 };

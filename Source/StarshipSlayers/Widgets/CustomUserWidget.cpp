@@ -8,7 +8,7 @@
 void UCustomUserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	SetIsFocusable(true);
+	//SetIsFocusable(true);
 }
 
 void UCustomUserWidget::NativeOnInitialized()
@@ -46,8 +46,11 @@ void UCustomUserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
 
 		if(currentFocusButton != nullptr)
 		{
-			OnFocusChanged(nullptr, currentFocusButton);
-			PreviousFocusedButton = nullptr;
+			currentFocusButton->SetFocus();
+		}
+		else
+		{
+			FocusButton[0]->SetFocus();
 		}
 	}
 }

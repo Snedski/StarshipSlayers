@@ -30,7 +30,6 @@ void UPauseSystem::TogglePauseMenu()
 	if(bPauseMenuOpen)
 	{
 		controller->SetInputMode(FInputModeGameAndUI());
-		PauseMenu->GetContinueButton()->SetFocus();
 	}
 	else
 	{
