@@ -19,7 +19,7 @@ protected:
 	UStaticMeshComponent* ToggleSwitchMesh = nullptr;
 
 	UPROPERTY(EditInstanceOnly, Category = "_Settings")
-	TArray<AToggleLight*> ToggleLights = {};
+	FGuid SwitchGUID = FGuid();
 
 public:	
 	AToggleSwitch();

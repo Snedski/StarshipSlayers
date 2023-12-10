@@ -4,6 +4,7 @@
 #include "MainGameMode.h"
 #include "Managers/Save/SaveManager.h"
 #include "Managers/ChipMode/ChipModeManager.h"
+#include "Managers/ObjectLink/ObjectLinkManager.h"
 #include "Systems/Fade/FadeSystem.h"
 
 AMainGameMode* AMainGameMode::MainGameModeInstance = nullptr;
@@ -15,6 +16,7 @@ AMainGameMode::AMainGameMode()
 
 	SaveManager = CreateDefaultSubobject<USaveManager>("Save Manager");
 	ChipModeManager = CreateDefaultSubobject<UChipModeManager>("ChipMode Manager");
+	ObjectLinkManager = CreateDefaultSubobject<UObjectLinkManager>("ObjectLink Manager");
 }
 
 void AMainGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)

@@ -3,6 +3,7 @@
 
 #include "ToggleLight.h"
 #include "Runtime/Engine/Classes/Components/SpotLightComponent.h"
+#include "../GameMode/Managers/ObjectLink/ObjectLinkManager.h"
 
 AToggleLight::AToggleLight()
 {
@@ -25,6 +26,8 @@ AToggleLight::AToggleLight()
 void AToggleLight::BeginPlay()
 {
 	Super::BeginPlay();
+
+	UObjectLinkManager::AddObjectToGUID(SwitchGUID, this);
 
 	DefaultSpotLightIntensity = SpotLight->Intensity;
 	NeonMeshGlowMaterial = NeonMesh->CreateDynamicMaterialInstance(1);
@@ -60,6 +63,13 @@ void AToggleLight::Tick(float DeltaSeconds)
 	float alpha = CurrentTransitionTime / TransitionTime;
 	SpotLight->SetIntensity(FMath::Lerp(0.f, DefaultSpotLightIntensity, alpha));
 	NeonMeshGlowMaterial->SetScalarParameterValue("Glow", FMath::Lerp(0.f, DefaultNeonMeshGlowValue, alpha));
+}
+
+void AToggleLight::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	UObjectLinkManager::RemoveObjectToGIUD(SwitchGUID, this);
+
+	Super::EndPlay(EndPlayReason);
 }
 
 void AToggleLight::Toggle()

@@ -3,6 +3,7 @@
 
 #include "ToggleSwitch.h"
 #include "ToggleLight.h"
+#include "../GameMode/Managers/ObjectLink/ObjectLinkManager.h"
 
 AToggleSwitch::AToggleSwitch()
 {
@@ -14,7 +15,9 @@ AToggleSwitch::AToggleSwitch()
 
 void AToggleSwitch::Interact_Implementation()
 {
-	for(AToggleLight* light : ToggleLights)
+	TArray<AToggleLight*> toggleLights = UObjectLinkManager::GetObjectListFromGUID<AToggleLight>(SwitchGUID);
+
+	for(AToggleLight* light : toggleLights)
 	{
 		light->Toggle();
 	}

@@ -26,6 +26,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
 	UStaticMeshComponent* NeonMesh = nullptr;
 
+	UPROPERTY(EditInstanceOnly, Category = "_Settings")
+	FGuid SwitchGUID = FGuid();
+
 	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
 	float TransitionTime = 0.5f;
 
@@ -45,6 +48,8 @@ public:
 	void BeginPlay() override;
 
 	void Tick(float DeltaSeconds) override;
+
+	void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	void Toggle();
 

@@ -10,6 +10,7 @@
 class USaveManager;
 class AFadeSystem;
 class UChipModeManager;
+class UObjectLinkManager;
 
 UCLASS()
 class STARSHIPSLAYERS_API AMainGameMode : public AGameModeBase
@@ -19,6 +20,7 @@ class STARSHIPSLAYERS_API AMainGameMode : public AGameModeBase
 	friend USaveManager;
 	friend AFadeSystem;
 	friend UChipModeManager;
+	friend UObjectLinkManager;
 
 public:
 	static AMainGameMode* MainGameModeInstance;
@@ -29,6 +31,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, meta = (Hidden))
 	UChipModeManager* ChipModeManager = nullptr;
+
+	UPROPERTY(VisibleAnywhere, meta = (Hidden))
+	UObjectLinkManager* ObjectLinkManager = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = "_Settings")
 	float TimeBeforeFadeOut = 0.5f;
