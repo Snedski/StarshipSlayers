@@ -18,6 +18,10 @@ public:
 	UFUNCTION(exec)
 	void ActivateChipModeSelection(bool bActive);
 
+#if WITH_EDITORONLY_DATA
+
 	UFUNCTION(exec)
 	void RegisterChipModeStartingPosition();
+
+#endif
 };

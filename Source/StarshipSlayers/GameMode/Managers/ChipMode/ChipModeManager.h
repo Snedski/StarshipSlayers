@@ -27,14 +27,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "_Settings\|Debug")
 	TSoftClassPtr<UChipModeSelection> ChipModeSelectionSoft = nullptr;
 
-	UPROPERTY(EditAnywhere, Category = "_Settings\|Debug")
-	TSoftClassPtr<UChipModeStartingPosRegistration> ChipModeStartingPosRegistrationSoft = nullptr;
-
 	UPROPERTY()
 	UChipModeSelection* ChipModeSelection = nullptr;
-
-	UPROPERTY()
-	UChipModeStartingPosRegistration* ChipModeStartingPosRegistration = nullptr;
 
 	UPROPERTY()
 	UChipModeData* CurrentChipMode = nullptr;
@@ -53,8 +47,6 @@ protected:
 
 	void ShowChipModeSelectionWidget();
 
-	void ShowChipModeStartingPosRegistrationWidget();
-
 	UFUNCTION()
 	void OnChipModeFadeIn();
 
@@ -63,8 +55,6 @@ protected:
 
 public:
 	static void ActivateChipModeSelection(bool bActive);
-
-	static void LoadChipModeStartingPosRegistrationWidget();
 
 	UFUNCTION(BlueprintPure, DisplayName = "ChipModeManager - GetChipModeNameList")
 	static TArray<FString> GetChipModeNameList();
@@ -75,6 +65,22 @@ public:
 	UFUNCTION(BlueprintCallable, DisplayName = "ChipModeManager - AccessChipModeByName")
 	static void AccessChipModeByName(FString chipModeName);
 
-	UFUNCTION(BlueprintCallable, DisplayName = "ChipModeManager - RegisterChipModeStartingPosition")
+#if WITH_EDITORONLY_DATA
+
+protected:
+	UPROPERTY(EditAnywhere, Category = "_Settings\|Debug")
+	TSoftClassPtr<UChipModeStartingPosRegistration> ChipModeStartingPosRegistrationSoft = nullptr;
+
+	UPROPERTY()
+	UChipModeStartingPosRegistration* ChipModeStartingPosRegistration = nullptr;
+
+protected:
+	void ShowChipModeStartingPosRegistrationWidget();
+
+public:
+	static void LoadChipModeStartingPosRegistrationWidget();
+
 	static void RegisterChipModeStartingPosition(FString chipModeName);
+
+#endif
 };

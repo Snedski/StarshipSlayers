@@ -48,9 +48,7 @@ void UChipModeManager::TickComponent(float DeltaTime, enum ELevelTick TickType, 
 
 	if(worldPartition->IsAllStreamingCompleted())
 	{
-		APlayerController* controller = GetWorld()->GetFirstPlayerController();
 		SetComponentTickEnabled(false);
-
 		AFadeSystem::GetInstance()->FadeOut(FFadeData());
 	}
 }
@@ -60,16 +58,6 @@ void UChipModeManager::ShowChipModeSelectionWidget()
 	bInProcess = false;
 	ChipModeSelection = CreateWidget<UChipModeSelection>(GetWorld()->GetFirstPlayerController(), ChipModeSelectionSoft.Get());
 	ChipModeSelection->AddToViewport(1);
-
-	APlayerController* controller = GetWorld()->GetFirstPlayerController();
-	controller->SetInputMode(FInputModeGameAndUI());
-}
-
-void UChipModeManager::ShowChipModeStartingPosRegistrationWidget()
-{
-	bInProcess = false;
-	ChipModeStartingPosRegistration = CreateWidget<UChipModeStartingPosRegistration>(GetWorld()->GetFirstPlayerController(), ChipModeStartingPosRegistrationSoft.Get());
-	ChipModeStartingPosRegistration->AddToViewport(1);
 
 	APlayerController* controller = GetWorld()->GetFirstPlayerController();
 	controller->SetInputMode(FInputModeGameAndUI());
@@ -149,28 +137,6 @@ void UChipModeManager::ActivateChipModeSelection(bool bActive)
 	}
 }
 
-void UChipModeManager::LoadChipModeStartingPosRegistrationWidget()
-{
-#if !WITH_EDITOR
-	return;
-#else
-	UChipModeManager* inst = GetInstance();
-
-	if(inst->bEnable && !IsValid(inst->ChipModeStartingPosRegistration) && !inst->bInProcess)
-	{
-		inst->bInProcess = true;
-
-		APlayerController* controller = inst->GetWorld()->GetFirstPlayerController();
-		controller->SetPause(true);
-
-		const FSoftObjectPath& path = inst->ChipModeStartingPosRegistrationSoft.ToSoftObjectPath();
-		FStreamableDelegate del = FStreamableDelegate::CreateUObject(inst, &UChipModeManager::ShowChipModeStartingPosRegistrationWidget);
-
-		UAssetManager::GetStreamableManager().RequestAsyncLoad(path, del);
-	}
-#endif
-}
-
 TArray<FString> UChipModeManager::GetChipModeNameList()
 {
 	UChipModeManager* inst = GetInstance();
@@ -247,6 +213,36 @@ void UChipModeManager::AccessChipModeByName(FString chipModeName)
 	}
 }
 
+#if WITH_EDITORONLY_DATA
+
+void UChipModeManager::ShowChipModeStartingPosRegistrationWidget()
+{
+	bInProcess = false;
+	ChipModeStartingPosRegistration = CreateWidget<UChipModeStartingPosRegistration>(GetWorld()->GetFirstPlayerController(), ChipModeStartingPosRegistrationSoft.Get());
+	ChipModeStartingPosRegistration->AddToViewport(1);
+
+	APlayerController* controller = GetWorld()->GetFirstPlayerController();
+	controller->SetInputMode(FInputModeGameAndUI());
+}
+
+void UChipModeManager::LoadChipModeStartingPosRegistrationWidget()
+{
+	UChipModeManager* inst = GetInstance();
+
+	if(inst->bEnable && !IsValid(inst->ChipModeStartingPosRegistration) && !inst->bInProcess)
+	{
+		inst->bInProcess = true;
+
+		APlayerController* controller = inst->GetWorld()->GetFirstPlayerController();
+		controller->SetPause(true);
+
+		const FSoftObjectPath& path = inst->ChipModeStartingPosRegistrationSoft.ToSoftObjectPath();
+		FStreamableDelegate del = FStreamableDelegate::CreateUObject(inst, &UChipModeManager::ShowChipModeStartingPosRegistrationWidget);
+
+		UAssetManager::GetStreamableManager().RequestAsyncLoad(path, del);
+	}
+}
+
 void UChipModeManager::RegisterChipModeStartingPosition(FString chipModeName)
 {
 	UChipModeManager* inst = GetInstance();
@@ -279,3 +275,5 @@ void UChipModeManager::RegisterChipModeStartingPosition(FString chipModeName)
 		controller->SetPause(false);
 	}
 }
+
+#endif

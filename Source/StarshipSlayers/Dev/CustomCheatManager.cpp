@@ -24,7 +24,11 @@ void UCustomCheatManager::ActivateChipModeSelection(bool bActive)
 	UChipModeManager::ActivateChipModeSelection(bActive);
 }
 
+#if WITH_EDITORONLY_DATA
+
 void UCustomCheatManager::RegisterChipModeStartingPosition()
 {
 	UChipModeManager::LoadChipModeStartingPosRegistrationWidget();
 }
+
+#endif

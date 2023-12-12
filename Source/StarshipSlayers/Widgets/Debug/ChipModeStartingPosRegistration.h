@@ -10,4 +10,7 @@ UCLASS()
 class STARSHIPSLAYERS_API UChipModeStartingPosRegistration : public UUserWidget
 {
 	GENERATED_BODY()
+
+	UFUNCTION(BlueprintCallable)
+	void OnSaveButtonClicked(FString selectedOption);
 };
