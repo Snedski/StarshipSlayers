@@ -54,6 +54,7 @@ protected:
 	void OnChipModeFadeOut();
 
 public:
+	UFUNCTION(BlueprintCallable, DisplayName = "ChipModeManager - ActivateChipModeSelection")
 	static void ActivateChipModeSelection(bool bActive);
 
 	UFUNCTION(BlueprintPure, DisplayName = "ChipModeManager - GetChipModeNameList")
