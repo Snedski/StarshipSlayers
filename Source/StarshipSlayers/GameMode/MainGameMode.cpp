@@ -58,9 +58,8 @@ void AMainGameMode::Tick(float DeltaSeconds)
 	}
 }
 
-void AMainGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void AMainGameMode::FinishDestroy()
 {
 	MainGameModeInstance = nullptr;
-
-	Super::EndPlay(EndPlayReason);
+	Super::FinishDestroy();
 }

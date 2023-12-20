@@ -53,5 +53,5 @@ protected:
 
 	void Tick( float DeltaSeconds ) override;
 
-	void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	void FinishDestroy() override;
 };
