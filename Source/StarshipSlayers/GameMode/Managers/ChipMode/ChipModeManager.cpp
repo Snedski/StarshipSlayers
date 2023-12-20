@@ -14,6 +14,9 @@
 #include "../../Systems/Fade/FadeSystem.h"
 #include "WorldPartition/WorldPartitionSubsystem.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
+#include "../Save/SaveManager.h"
+#include "../../../Save/MainSaveData.h"
+#include "../../../Save/MainSaveGame.h"
 
 UChipModeManager* UChipModeManager::GetInstance()
 {
@@ -32,9 +35,9 @@ void UChipModeManager::InitManager()
 
 	AWorldDataLayers* dataLayers = GetWorld()->GetWorldDataLayers();
 	UDataLayerManager* dataLayerManager = GetWorld()->GetDataLayerManager();
-	CurrentChipMode = DefaultMode;
+	UChipModeData* current = GetCurrentChipMode();
 
-	for(UDataLayerAsset* dataLayerAsset : DefaultMode->LoadedLayers)
+	for(UDataLayerAsset* dataLayerAsset : current->LoadedLayers)
 	{
 		dataLayerManager->SetDataLayerRuntimeState(dataLayerAsset, EDataLayerRuntimeState::Activated);
 	}
@@ -69,6 +72,7 @@ void UChipModeManager::OnChipModeFadeIn()
 
 	AWorldDataLayers* dataLayers = GetWorld()->GetWorldDataLayers();
 	UDataLayerManager* dataLayerManager = GetWorld()->GetDataLayerManager();
+	UChipModeData* current = GetCurrentChipMode();
 
 	dataLayers->ForEachDataLayer([dataLayerManager](UDataLayerInstance* dataLayerInstance)
 	{
@@ -77,7 +81,7 @@ void UChipModeManager::OnChipModeFadeIn()
 		return true;
 	});
 
-	for(UDataLayerAsset* dataLayerAsset : CurrentChipMode->LoadedLayers)
+	for(UDataLayerAsset* dataLayerAsset : current->LoadedLayers)
 	{
 		dataLayerManager->SetDataLayerRuntimeState(dataLayerAsset, EDataLayerRuntimeState::Activated);
 	}
@@ -86,22 +90,26 @@ void UChipModeManager::OnChipModeFadeIn()
 	APawn* pawn = controller->GetPawn();
 	SetComponentTickEnabled(true);
 
-	if(CurrentChipMode == DefaultMode)
+	UMainSaveGame* saveGame = USaveManager::GetSaveFromSlot("SaveSlot_0");
+
+	if(current == DefaultMode)
 	{
-		pawn->SetActorLocation(LatestLocation);
-		pawn->SetActorRotation(LatestRotation);
-		controller->SetControlRotation(LatestRotation);
+		FChipModeSaveData saveData = saveGame->ChipModeSaveData;
+
+		pawn->SetActorLocation(saveData.LastPlayerLocation);
+		pawn->SetActorRotation(saveData.LastPlayerRotation);
+		controller->SetControlRotation(saveData.LastPlayerRotation);
 	}
 	else
 	{
-		LatestLocation = pawn->GetActorLocation();
-		LatestRotation = pawn->GetControlRotation();
+		saveGame->ChipModeSaveData.LastPlayerLocation = pawn->GetActorLocation();
+		saveGame->ChipModeSaveData.LastPlayerRotation = pawn->GetControlRotation();
 
-		if(CurrentChipMode->StartLocation != FVector::ZeroVector && CurrentChipMode->StartRotation != FRotator::ZeroRotator)
+		if(current->StartLocation != FVector::ZeroVector && current->StartRotation != FRotator::ZeroRotator)
 		{
-			pawn->SetActorLocation(CurrentChipMode->StartLocation);
-			pawn->SetActorRotation(CurrentChipMode->StartRotation);
-			controller->SetControlRotation(CurrentChipMode->StartRotation);
+			pawn->SetActorLocation(current->StartLocation);
+			pawn->SetActorRotation(current->StartRotation);
+			controller->SetControlRotation(current->StartRotation);
 		}
 	}
 }
@@ -144,7 +152,7 @@ TArray<FString> UChipModeManager::GetChipModeNameList()
 	if(inst->bEnable)
 	{
 		TArray<FString> result = {};
-		result.Add(inst->DefaultMode->ChipModeName);
+		result.Add("Default");
 
 		for(UChipModeData* data : inst->ChipModeDatas)
 		{
@@ -165,14 +173,15 @@ void UChipModeManager::AccessChipMode(UChipModeData* chipModeData)
 	{
 		if(!inst->bInProcess)
 		{
-			inst->CurrentChipMode = chipModeData;
+			UMainSaveGame* saveGame = USaveManager::GetSaveFromSlot("SaveSlot_0");
+			saveGame->ChipModeSaveData.CurrentChipModeName = chipModeData->ChipModeName;
 			inst->bInProcess = true;
 
 			UWorld* world = inst->GetWorld();
 			AWorldDataLayers* dataLayers = world->GetWorldDataLayers();
 			UDataLayerManager* dataLayerManager = world->GetDataLayerManager();
 
-			for(UDataLayerAsset* dataLayerAsset : inst->CurrentChipMode->LoadedLayers)
+			for(UDataLayerAsset* dataLayerAsset : chipModeData->LoadedLayers)
 			{
 				const UDataLayerInstance* dataLayerInstance = dataLayerManager->GetDataLayerInstanceFromAsset(dataLayerAsset);
 				EDataLayerRuntimeState currentState = dataLayerManager->GetDataLayerInstanceRuntimeState(dataLayerInstance);
@@ -202,15 +211,31 @@ void UChipModeManager::AccessChipModeByName(FString chipModeName)
 			return;
 		}
 
-		for(UChipModeData* chipModeData : inst->ChipModeDatas)
+		if(UChipModeData* chipModeData = inst->GetChipModeByName(chipModeName))
 		{
-			if(chipModeName == chipModeData->ChipModeName)
-			{
-				AccessChipMode(chipModeData);
-				return;
-			}
+			AccessChipMode(chipModeData);
 		}
 	}
+}
+
+UChipModeData* UChipModeManager::GetChipModeByName(FString chipModeName)
+{
+	for(UChipModeData* chipModeData : ChipModeDatas)
+	{
+		if(chipModeName == chipModeData->ChipModeName)
+		{
+			return chipModeData;
+		}
+	}
+
+	return DefaultMode;
+}
+
+UChipModeData* UChipModeManager::GetCurrentChipMode()
+{
+	UMainSaveGame* saveGame = USaveManager::GetSaveFromSlot("SaveSlot_0");
+	FChipModeSaveData saveData = saveGame->ChipModeSaveData;
+	return GetChipModeByName(saveData.CurrentChipModeName);
 }
 
 #if WITH_EDITORONLY_DATA

@@ -16,13 +16,20 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	FRotator PlayerRotation = FRotator::ZeroRotator;
+};
+
+USTRUCT(BlueprintType)
+struct FChipModeSaveData
+{
+	GENERATED_USTRUCT_BODY()
 
 public:
-	FPlayerSaveData() {};
+	UPROPERTY(BlueprintReadWrite)
+	FVector LastPlayerLocation = FVector::ZeroVector;
 
-	FPlayerSaveData(FVector inLocation, FRotator inRotation)
-	{
-		PlayerLocation = inLocation;
-		PlayerRotation = inRotation;
-	}
+	UPROPERTY(BlueprintReadWrite)
+	FRotator LastPlayerRotation = FRotator::ZeroRotator;
+
+	UPROPERTY(BlueprintReadWrite)
+	FString CurrentChipModeName = "";
 };

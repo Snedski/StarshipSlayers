@@ -30,11 +30,6 @@ protected:
 	UPROPERTY()
 	UChipModeSelection* ChipModeSelection = nullptr;
 
-	UPROPERTY()
-	UChipModeData* CurrentChipMode = nullptr;
-
-	FVector LatestLocation = FVector::ZeroVector;
-	FRotator LatestRotation = FRotator::ZeroRotator;
 	bool bChipModeSelectionActive = false;
 	bool bInProcess = false;
 
@@ -65,6 +60,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, DisplayName = "ChipModeManager - AccessChipModeByName")
 	static void AccessChipModeByName(FString chipModeName);
+
+protected:
+	UChipModeData* GetChipModeByName(FString chipModeName);
+
+	UChipModeData* GetCurrentChipMode();
 
 #if WITH_EDITORONLY_DATA
 

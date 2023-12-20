@@ -23,4 +23,16 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	FRotator StartRotation = FRotator::ZeroRotator;
+
+#if WITH_EDITOR
+public:
+	UChipModeData()
+	{
+		if(ChipModeName == "Default_ChipMode_Name")
+		{
+			ChipModeName = GetName();
+			MarkPackageDirty();
+		}
+	}
+#endif
 };

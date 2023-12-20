@@ -15,4 +15,7 @@ class STARSHIPSLAYERS_API UMainSaveGame : public USaveGame
 public:
 	UPROPERTY(BlueprintReadWrite)
 	FPlayerSaveData PlayerSaveData = FPlayerSaveData();
+
+	UPROPERTY(BlueprintReadWrite)
+	FChipModeSaveData ChipModeSaveData = FChipModeSaveData();
 };
