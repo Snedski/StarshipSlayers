@@ -117,6 +117,10 @@ void UChipModeManager::OnChipModeFadeIn()
 void UChipModeManager::OnChipModeFadeOut()
 {
 	AFadeSystem::GetInstance()->OnFadeOut.RemoveDynamic(this, &UChipModeManager::OnChipModeFadeOut);
+
+	APlayerController* controller = GetWorld()->GetFirstPlayerController();
+	controller->SetCinematicMode(false, true, true);
+
 	bInProcess = false;
 }
 
@@ -180,6 +184,8 @@ void UChipModeManager::AccessChipMode(UChipModeData* chipModeData)
 			UWorld* world = inst->GetWorld();
 			AWorldDataLayers* dataLayers = world->GetWorldDataLayers();
 			UDataLayerManager* dataLayerManager = world->GetDataLayerManager();
+			APlayerController* controller = world->GetFirstPlayerController();
+			controller->SetCinematicMode(true, true, true);
 
 			for(UDataLayerAsset* dataLayerAsset : chipModeData->LoadedLayers)
 			{
