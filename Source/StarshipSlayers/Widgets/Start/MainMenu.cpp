@@ -20,5 +20,5 @@ void UMainMenu::OnQuit()
 void UMainMenu::OnPlayFadeIn()
 {
 	AFadeSystem::GetInstance()->OnFadeIn.RemoveDynamic(this, &UMainMenu::OnPlayFadeIn);
-	UGameplayStatics::OpenLevel(GetWorld(), FName("FirstPersonMap"));
+	UGameplayStatics::OpenLevel(GetWorld(), FName("Spaceship_Main"));
 }
