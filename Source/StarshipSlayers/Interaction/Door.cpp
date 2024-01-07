@@ -58,6 +58,7 @@ void ADoor::Tick(float DeltaSeconds)
 	}
 
 	float alpha = CurrentTransitionTime / AnimationTime;
+	alpha = FMath::Clamp(SmoothCurve->GetFloatValue(alpha), 0.f, 1.f);
 	DoorMesh->SetRelativeLocation(FVector(0., 0.f, FMath::Lerp(0.f, 450.f, alpha)));
 }
 

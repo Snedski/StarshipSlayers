@@ -33,6 +33,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "_Settings")
 	float AnimationTime = 1.f;
 
+	UPROPERTY(EditAnywhere, Category = "_Settings")
+	UCurveFloat* SmoothCurve = nullptr;
+
 	float CurrentTransitionTime = 0.f;
 	bool bOpen = false;
 
